@@ -20,7 +20,7 @@ CREATE TABLE noah.meal_ingredients AS
 (
 	SELECT
 		product__c as meal_id,
-		sfid as ingredient_id
+		ingredient__c as ingredient_id
 	FROM salesforce.product_ingredient__c
 )
 
@@ -32,5 +32,4 @@ CREATE TABLE noah.ingredients AS
 		name
 	FROM salesforce.ingredient__c
 )
-
 
