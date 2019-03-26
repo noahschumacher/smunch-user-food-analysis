@@ -42,6 +42,7 @@ SELECT
 	contact_sfid as cust_id,
 	product_sfid as meal_id,
 	product_name as meal_name,
+	product_type as category,
 	restaurant_name,
 	delivery_timestamp as delivery_tm,
 	rating_score as meal_rating
@@ -54,6 +55,7 @@ WHERE
 SELECT
 	product_sfid as meal_id,
 	product_name as meal_name,
+	product_type as category,
 	AVG(rating_score) as avg_meal_rating,
 	COUNT(rating_score) as rating_count
 FROM 
@@ -61,7 +63,7 @@ FROM
 WHERE
 	order_type = 'single' and rating_score IS NOT NULL
 GROUP BY
-	product_name, product_sfid
+	product_name, product_sfid, product_type
 
 
 -- Aggregated ingredient table meal --> ingredients list
@@ -80,6 +82,7 @@ CREATE TABLE noah.meal_rating_ingredients AS
 		(SELECT
 			product_sfid as meal_id,
 			product_name as meal_name,
+			product_type as category,
 			AVG(rating_score) as avg_meal_rating,
 			COUNT(rating_score) as rating_count
 		FROM 
@@ -87,7 +90,7 @@ CREATE TABLE noah.meal_rating_ingredients AS
 		WHERE
 			order_type = 'single' and rating_score IS NOT NULL
 		GROUP BY
-			product_name, product_sfid),
+			product_name, product_sfid, product_type),
 
 	t2 AS
 		(SELECT
@@ -99,7 +102,7 @@ CREATE TABLE noah.meal_rating_ingredients AS
 			product__c)
 			
 	SELECT 
-		t1.meal_id, t1.meal_name, t1.avg_meal_rating, t1.rating_count, t2.ingredient_ids FROM t1
+		t1.meal_id, t1.meal_name, t1. category, t1.avg_meal_rating, t1.rating_count, t2.ingredient_ids FROM t1
 	LEFT JOIN
 		t2
 	ON 
