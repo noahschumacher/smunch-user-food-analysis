@@ -28,6 +28,22 @@
 - Some ingredients are very similar and should maybe be grouped together.
   - Ex: "lime" and "lime juice" , "pepper" and "pepper sauce"
 
+##### - eda2_clustering.py:
+- Initial exploration of clustering users based on ingredient frequency.
+- Reading in pickled_df with customer_id and ingredients as features
+	- vals are the frequency of presence in customers meals
+- Two methods:
+	1. kmeans:
+		- Need standardized data.
+		- Printing our food associated with each topic gives some insight into user clusters but still hard to define.
+		- Sil score gives optimal number of clusters to be right around 5 depending on the data.
+		- Only selecting some ingredients. Currently selecting ingredients to use as features based on how large the variance is. Idea here is that ingredients with larger variance will have more signal in food preferences.
+	2. Hierarchial:
+		- Not as easy to understand as Kmeans.
+		- Need to explore different thresholds.
+- Need to figure out how to utilize cluster information in next steps.
+
+
 ### model:
 ##### data-prep.py:
 - Rudementary attempt to create ingredient frequency dataframe.
@@ -35,3 +51,5 @@
 - Due to looping process ingredients with the same spelling and different capitalization are grouped together which is good.
 - Runs very slowly (only using for a subset of data right now)
 - Saves the dataframe as a pickle file
+
+##### 
