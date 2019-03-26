@@ -64,7 +64,7 @@ def get_user_frequency(cust_meals_df, meal_ings, ingrds, customers):
 			print("Customer not added")
 
 
-		print("Percent Complete:", np.round( (count/500)*100, 4))
+		print("Percent Complete:", np.round( (count/3000)*100, 4))
 		count += 1
 
 
@@ -114,7 +114,7 @@ if __name__ == '__main__':
 	meal_ingrds_grouped.columns = ['ingredients']
 
 	## Choosing n random customers to look at
-	customers = list(np.random.choice(orders_grouped.index, 500, replace=False))
+	customers = list(np.random.choice(orders_grouped.index, 3000, replace=False))
 	customers, master = get_user_frequency(orders_grouped, meal_ingrds_grouped, ingrds, customers)
 
 	## Getting the ingredients present in customer orders
