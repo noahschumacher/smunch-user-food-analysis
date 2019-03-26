@@ -13,51 +13,62 @@ This file is used for:
 
 import numpy as np
 import pandas as pd
-import eda.python_db as db
 import pickle
 
 
 ## Getting frequency for each user
-def get_user_frequency(cust_meals_df, meal_ings, ingrds):
-	customers = cust_meals_df.index
+def get_user_frequency(cust_meals_df, meal_ings, ingrds, customers):
 
 	master = {}
-
 	count = 0
+	cust_copy = customers.copy()
+	print("Inital Len", len(customers))
+
 	## Looping through each customer
-	for cust in customers[0:200]:
+	for cust in customers:
 		## The customer meals they have ordered (with repeats)
 		cust_meals = cust_meals_df.loc[cust].values[0]
 
 		tot_meals = len(cust_meals)
-		ingr_dic = {}
 
-		## Looping through the meals for that customer
-		for meal in cust_meals:
+		## Only use customers who have ordered more than n times
+		if tot_meals > 3:
+			ingr_dic = {}
 
-			## Checking if meal has ingredients (very small # of meals missing)
-			if meal in meal_ings.index:
-				ingrs = meal_ings.loc[meal].values[0]
+			## Looping through the meals for that customer
+			for meal in cust_meals:
 
-				## Looping through ingredients and adding value if present
-				for ing in ingrs:
-					name = ingrds.loc[ingrds.ingredient_id == ing, :].name.values
+				## Checking if meal has ingredients (very small # of meals missing)
+				if meal in meal_ings.index:
+					ingrs = meal_ings.loc[meal].values[0]
 
-					## Checking if the ingredient is present in ingredients table
-					if len(name) != 0:
-						name = name[0].lower()
+					## Looping through ingredients and adding value if present
+					for ing in ingrs:
+						name = ingrds.loc[ingrds.ingredient_id == ing, :].name.values
 
-						if name in ingr_dic:
-							ingr_dic[name] += np.round(1/tot_meals,3)
+						## Checking if the ingredient is present in ingredients table
+						if len(name) != 0:
+							name = name[0].lower()
 
-						else:
-							ingr_dic[name] = np.round(1/tot_meals,3)
+							if name in ingr_dic:
+								ingr_dic[name] += np.round(1/tot_meals,3)
 
-		master[cust] = ingr_dic
-		print("Percent Complete:", count/200)
+							else:
+								ingr_dic[name] = np.round(1/tot_meals,3)
+
+			print("Added to master")
+			master[cust] = ingr_dic
+
+		else:
+			cust_copy.remove(cust)
+			print("Customer not added")
+
+
+		print("Percent Complete:", np.round( (count/500)*100, 4))
 		count += 1
 
-	return customers, master
+
+	return cust_copy, master
 
 
 ## Get set of all ingredients
@@ -102,17 +113,18 @@ if __name__ == '__main__':
 	meal_ingrds_grouped = pd.DataFrame(meal_ingrds.groupby('meal_id')['ingredient_id'].apply(list))
 	meal_ingrds_grouped.columns = ['ingredients']
 
+	## Choosing n random customers to look at
+	customers = list(np.random.choice(orders_grouped.index, 500, replace=False))
+	customers, master = get_user_frequency(orders_grouped, meal_ingrds_grouped, ingrds, customers)
 
-	customers, master = get_user_frequency(orders_grouped, meal_ingrds_grouped, ingrds)
-	#print("\nMaster:\n", master)
+	## Getting the ingredients present in customer orders
 	ingredients = get_used_ingredients(master)
-	#print("\nIngredients:\n", ingredients)
+
+	## Creating the master dataframe and appending customer id column
 	df = create_db(master, ingredients)
-	df['cust_id'] = customers[0:200]
+	df['cust_id'] = customers
 
+	## Dumping the dataframe into a pickle file
 	pickle.dump(df, open('model/user_f_df.p', 'wb'))
-	df = pickle.load(open('model/user_f_df.p', 'rb'))
-
-	print("\nDF:\n", df)
 
 
