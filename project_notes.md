@@ -43,6 +43,15 @@
 		- Need to explore different thresholds.
 - Need to figure out how to utilize cluster information in next steps.
 
+##### - eda3_rating.ipynb:
+- Initial exploration of predicting meal rating based on ingredients ang general meal ratig breakdown.
+- Avg Meal Rating: 3.73
+- Meal Rating broken down by category (not significant differeces):
+	- Chefchoice: 3.73
+	- Livinglight: 3.67
+	- Powerpick: 3.79
+	- Freakyfit: 3.72
+
 
 ### model:
 ##### data-prep.py:
@@ -52,4 +61,27 @@
 - Runs very slowly (only using for a subset of data right now)
 - Saves the dataframe as a pickle file
 
-##### 
+##### pred_cleaning.py:
+- File reads in meal andn avg rating dataframe.
+- Converts meal ID's to meal names
+- combines small number of ingredients that are similar:
+	1. If spelled the same with different capitalization combines them
+	2. Uses stemming to combine same root
+- Outputs:
+	1. pickled feature matrix X (in models folder)
+	2. pickled target values y (in models folder)
+
+##### pred_rating.py:
+- General file which does a grid search for both a Random Forrest and Gradient Boost Regressor Models. Best models are saved as pickle files.
+- Models are comparable but the Random Forrest is much faster at fitting.
+- Results:
+	- Final RF MSE: 0.1581
+	- Final GB MSE: 0.1682
+- Random forrest model is slightly superior
+- MSE of .158 means that on average the predicted rating is +- .397 stars from the true.
+- Areas of possible concern:
+	- For some runs the Test MSE is equal to or less than the Train MSE
+	- Not a lot of data for fitting (only 657 meals with more than 5 ratings)
+
+
+
