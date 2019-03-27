@@ -1,18 +1,21 @@
 ## Notes as I work through Capstone
 
+
 ### data:
    - Where local csv files will love for eda and model training.
 
 
-### eda:
-##### - initial-sql.sql:
+### db:
+##### python_db.py:
+- File contains a function for querying Smunch DB and three base queries to get save data to CSV file locally.
+
+##### initial-sql.sql:
 - File contains all used SQL queries
 - Should make queries handle more of the work than they do (In pandas two groupbys could be converted in sql)
 
-##### - python_db.py:
-- File contains a function for querying Smunch DB and three base queries to get save data to CSV file locally.
 
-##### - eda1.ipyb:
+### eda:
+##### eda1.ipyb:
 - Inital exploration of users, meals, ingredients
   - Total Users = 9838
   - Total Meals = 980
@@ -28,7 +31,7 @@
 - Some ingredients are very similar and should maybe be grouped together.
   - Ex: "lime" and "lime juice" , "pepper" and "pepper sauce"
 
-##### - eda2_clustering.py:
+##### eda2_clustering.py:
 - Initial exploration of clustering users based on ingredient frequency.
 - Reading in pickled_df with customer_id and ingredients as features
 	- vals are the frequency of presence in customers meals
@@ -43,7 +46,7 @@
 		- Need to explore different thresholds.
 - Need to figure out how to utilize cluster information in next steps.
 
-##### - eda3_rating.ipynb:
+##### eda3_rating.ipynb:
 - Initial exploration of predicting meal rating based on ingredients ang general meal ratig breakdown.
 - Avg Meal Rating: 3.73
 - Meal Rating broken down by category (not significant differeces):
@@ -51,6 +54,13 @@
 	- Livinglight: 3.67
 	- Powerpick: 3.79
 	- Freakyfit: 3.72
+
+##### feature_analysis.ipynb:
+- Notebook for viewing and exploring feature importances (permutation importances) and partial depedencies.
+- Imports all function from model/feature_importance.py which contains functionality to create plots.
+
+### images:
+- Folder for holding used images
 
 
 ### model:
@@ -82,6 +92,26 @@
 - Areas of possible concern:
 	- For some runs the Test MSE is equal to or less than the Train MSE
 	- Not a lot of data for fitting (only 657 meals with more than 5 ratings)
+
+##### feature_importance.py:
+- File contains functions for calculating the permutation imporatance of a feature in a Random Forrest model and Partial Dependence of a feature given its name.
+- Two main function which call other helper functions are:
+	- plot_partial_dependence(model, X_train, features, name)
+	- plot_perm_import(f_imps, names, n)
+- Needs to have:
+	- Fitted model
+	- Split data
+	- list of feature names
+
+### pickle:
+* feature_cols: list of ingredient names as they appear in the feature matrix X_features
+* gb_model: sklearn gradient boosted regressor model (unfit)
+* rf_model: sklearn random forrest regressor model (unfit)
+* user_f_df: pandas dataframe with each row as customer and cols as ingredients. Values in each cell are frequency that ingredient is in users dishes
+* X_features: np 2d array (meals = rows, cols = ingredients)
+* y_target: np 1d array of avg meal ratings. Used with X_features
+
+
 
 
 
