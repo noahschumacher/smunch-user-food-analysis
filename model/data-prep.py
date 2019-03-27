@@ -15,6 +15,10 @@ import numpy as np
 import pandas as pd
 import pickle
 
+from itertools import product
+
+from multiprocessing import Pool
+
 
 ## Getting frequency for each user
 def get_user_frequency(cust_meals_df, meal_ings, ingrds, customers):
@@ -64,7 +68,7 @@ def get_user_frequency(cust_meals_df, meal_ings, ingrds, customers):
 			print("Customer not added")
 
 
-		print("Percent Complete:", np.round( (count/3000)*100, 4))
+		print("Percent Complete:", np.round( (count/9838)*100, 4))
 		count += 1
 
 
@@ -114,7 +118,10 @@ if __name__ == '__main__':
 	meal_ingrds_grouped.columns = ['ingredients']
 
 	## Choosing n random customers to look at
-	customers = list(np.random.choice(orders_grouped.index, 3000, replace=False))
+	#customers = list(np.random.choice(orders_grouped.index, 3000, replace=False))
+	customers = list(orders_grouped.index)
+	print(len(customers))
+
 	customers, master = get_user_frequency(orders_grouped, meal_ingrds_grouped, ingrds, customers)
 
 	## Getting the ingredients present in customer orders
@@ -125,6 +132,6 @@ if __name__ == '__main__':
 	df['cust_id'] = customers
 
 	## Dumping the dataframe into a pickle file
-	pickle.dump(df, open('model/user_f_df.p', 'wb'))
+	pickle.dump(df, open('pickle/user_f_df.p', 'wb'))
 
 
