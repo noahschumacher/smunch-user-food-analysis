@@ -92,25 +92,25 @@ if __name__ == '__main__':
 	
 	## Getting models from the gridsearch
 	rf_model = rf_grid(X_train, y_train, X_test, y_test)
-	gb_model = gb_grid(X_train, y_train, X_test, y_test)
+	# gb_model = gb_grid(X_train, y_train, X_test, y_test)
 
 	## cross val score of best model
 	rf_mse = cross_val(X_train, y_train, rf_model)
-	gb_mse = cross_val(X_train, y_train, gb_model)
+	# gb_mse = cross_val(X_train, y_train, gb_model)
 
 	rf_model.fit(X_train, y_train)
-	gb_model.fit(X_train, y_train)
+	# gb_model.fit(X_train, y_train)
 	
 	## Preds on test data for both gridsearched vals
 	rf_preds = rf_model.predict(X_test)
-	gb_preds = gb_model.predict(X_test)
+	# gb_preds = gb_model.predict(X_test)
 
 
 	## Print the error of the test
 	rf_error = np.round(np.sum((rf_preds - y_test)**2) / len(y_test), 4)
-	gb_error = np.round(np.sum((gb_preds - y_test)**2) / len(y_test), 4)
+	# gb_error = np.round(np.sum((gb_preds - y_test)**2) / len(y_test), 4)
 
 	print("\nFinal RF MSE:", rf_error)
-	print("Final GB MSE:", gb_error)
+	# print("Final GB MSE:", gb_error)
 
 
