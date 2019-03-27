@@ -36,7 +36,7 @@ def get_ingredients(meal_ratings, ingredients_sets):
 	for s in ingredient_sets:
 	    for ing in s:
 	        ings.append(ing)
-	return set(ings)
+	return list(set(ings))
 
 
 ## Create feature matrix and target values
@@ -73,6 +73,8 @@ if __name__ == '__main__':
 
 	## Getting feature matrix and target values
 	X, y = create_fandt(meal_ratings, ingredient_sets)
+
+	pickle.dump(ings, open('model/feature_cols.p', 'wb'))
 	pickle.dump(X, open('model/X_features.p', 'wb'))
 	pickle.dump(y, open('model/y_target.p', 'wb'))
 
