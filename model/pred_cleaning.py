@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 import pickle
 
 ## Function to run SQL query
-from eda.python_db import run_sql_query
+from db.python_db import run_sql_query
 
 ## Lemmatizing to merge similar ingredients
 from nltk.stem.wordnet import WordNetLemmatizer
