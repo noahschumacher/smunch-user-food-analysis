@@ -45,6 +45,14 @@
 		- Not as easy to understand as Kmeans.
 		- Need to explore different thresholds.
 - Need to figure out how to utilize cluster information in next steps.
+- Second iteration:
+	- Converted specific igredients to more generalized categories by hand. File in data folder (private).
+	- This allows for clearer insight into the clusters.
+	- Identifiable clusters include:
+		- Vegan
+		- Lighter Meals (seafood, asian)
+		- Heavyer / Unhealthier meals (meat, cheese, egg, mayo, etc)
+	- kmeans clusters seem more reasonable than hierarchial clustering.
 
 ##### eda3_rating.ipynb:
 - Initial exploration of predicting meal rating based on ingredients ang general meal ratig breakdown.
@@ -59,6 +67,12 @@
 - Notebook for viewing and exploring feature importances (permutation importances) and partial depedencies.
 - Imports all function from model/feature_importance.py which contains functionality to create plots.
 
+##### meal_rec.ipynb
+- Exploring meal recommendation system using collaborative filtering.
+- Model uses ALS with missing values entered with meal avg to create predicted satisfaction.
+- Want to explore annd understand hidden topics of ALS.
+- Need to do a test train split to gauge how it is performing.
+
 ### images:
 - Folder for holding used images
 
@@ -71,7 +85,7 @@
 - Runs very slowly (only using for a subset of data right now)
 - Saves the dataframe as a pickle file
 
-##### pred_cleaning.py:
+##### tree_pred_cleaning.py:
 - File reads in meal andn avg rating dataframe.
 - Converts meal ID's to meal names
 - combines small number of ingredients that are similar:
@@ -81,7 +95,7 @@
 	1. pickled feature matrix X (in models folder)
 	2. pickled target values y (in models folder)
 
-##### pred_rating.py:
+##### tree_rating.py:
 - General file which does a grid search for both a Random Forrest and Gradient Boost Regressor Models. Best models are saved as pickle files.
 - Models are comparable but the Random Forrest is much faster at fitting.
 - Results:
