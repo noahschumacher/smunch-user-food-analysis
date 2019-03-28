@@ -46,7 +46,7 @@ def rf_grid(X_train, y_train, X_test, y_test):
 	best_rf_model = rf_gridsearch.best_estimator_
 
 	## Dumping the best model to a pickle file
-	pickle.dump(best_rf_model, open('model/rf_model.p', 'wb'))
+	pickle.dump(best_rf_model, open('pickle/rf_model.p', 'wb'))
 
 	return best_rf_model
 
@@ -73,7 +73,7 @@ def gb_grid(X_train, y_train, X_test, y_test):
 	best_gb_model = gb_gridsearch.best_estimator_
 
 	## Dumping the best model to a pickle file
-	pickle.dump(best_gb_model, open('model/gb_model.p', 'wb'))
+	pickle.dump(best_gb_model, open('pickle/gb_model.p', 'wb'))
 
 	return best_gb_model
 
