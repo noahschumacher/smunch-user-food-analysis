@@ -166,7 +166,7 @@ def plot_perm_import(f_imps, names, n):
 
 ## Partial dependence indnicates which food help/hurt rating
 def plot_partial_dependence(model, X_train, features, name):
-		'''
+	'''
 	Parameters
 	----------
 	model: model with .predict
