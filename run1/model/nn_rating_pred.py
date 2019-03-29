@@ -77,8 +77,8 @@ def rating_regress(X_tr, X_te, y_tr, y_te):
 
 if __name__ == '__main__':
 
-	X = pickle.load(open('pickle/X_features.p', 'rb'))
-	y = pickle.load(open('pickle/y_target.p', 'rb'))
+	X = pickle.load(open('run1/pickle/X_features.p', 'rb'))
+	y = pickle.load(open('run2/pickle/y_target.p', 'rb'))
 	
 	X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=.25, random_state=32)
 

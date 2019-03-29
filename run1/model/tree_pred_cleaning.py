@@ -176,9 +176,9 @@ if __name__ == '__main__':
 								   cat_map)
 
 
-	pickle.dump(list(ing_map.keys()), open('pickle/feature_cols.p', 'wb'))
-	pickle.dump(X, open('pickle/X_features.p', 'wb'))
-	pickle.dump(y, open('pickle/y_target.p', 'wb'))
+	pickle.dump(list(ing_map.keys()), open('run1/pickle/feature_cols.p', 'wb'))
+	pickle.dump(X, open('run1/pickle/X_features.p', 'wb'))
+	pickle.dump(y, open('run1/pickle/y_target.p', 'wb'))
 
 
 

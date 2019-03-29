@@ -67,7 +67,7 @@ def get_mse(pred_df, cust_ratings):
 
 if __name__ == '__main__':
 	## Selecting pre created table with rating info
-	cust_ratings = pickle.load(open('pickle/cust_ratingsDF.p', 'rb'))
+	cust_ratings = pickle.load(open('run1/pickle/cust_ratingsDF.p', 'rb'))
 	cust_ratings = cust_ratings[['cust_id', 'meal_name', 'meal_rating']]
 
 	## Pivoting the table to get in format for ALS
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 	print("Pivoted")
 
 	## Get avg ratings for meals
-	avg = pickle.load(open('pickle/avg_meal_ratingDF.p', 'rb'))
+	avg = pickle.load(open('run1/pickle/avg_meal_ratingDF.p', 'rb'))
 
 	## For each column get avg value and assign it to missing info
 	for meal in table.columns:

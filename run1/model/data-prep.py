@@ -103,9 +103,9 @@ def create_db(dic, cols):
 
 if __name__ == '__main__':
 	## Getting the data
-	orders = pd.read_csv('data/orders.csv', index_col=0)
-	meal_ingrds = pd.read_csv('data/meal_ingrds.csv', index_col=0)
-	ingrds = pd.read_csv('data/ingrds.csv', index_col=0)
+	orders = pd.read_csv('run1/data/orders.csv', index_col=0)
+	meal_ingrds = pd.read_csv('run1/data/meal_ingrds.csv', index_col=0)
+	ingrds = pd.read_csv('run1/data/ingrds.csv', index_col=0)
 
 
 	## Creating orders dataframe with userid and list of meals ordered
@@ -132,6 +132,6 @@ if __name__ == '__main__':
 	df['cust_id'] = customers
 
 	## Dumping the dataframe into a pickle file
-	pickle.dump(df, open('pickle/user_f_df.p', 'wb'))
+	pickle.dump(df, open('run1/pickle/user_f_df.p', 'wb'))
 
 
