@@ -76,14 +76,26 @@ user_cat_counts = pd.DataFrame(user_cat_counts)
 tags = user_cat_counts['product_sfids'].apply(pd.Series)
 tags.rename(columns={0:'vegan', 1:'vegetarian', 2:'animal'}, inplace=True)
 
+## This drop drops customers who have never ordered a classified meal
+tags.dropna(axis=0, inplace=True)
+
 ## Add a total categorized meals column
 tags['total'] = tags.sum(axis=1)
 
-## Getting frequency of each
+## Print out some stats
+print("Only meat eaters: {0:2.2f}%".format(np.mean((tags.vegan == 0) & (tags.vegetarian==0))*100))
+print("Only Vegan: {0:2.2f}%".format(np.mean((tags.animal == 0) & (tags.vegetarian==0))*100))
+print("Vegan or Vegatarian: {0:2.2f}%".format(np.mean((tags.animal == 0))*100))
+
+## Getting frequency of each category
 cols = ['vegan', 'vegetarian', 'animal']
 for col in cols:
 	tags[col] = (tags[col] / tags['total'])
 
+## Scatter Matrix
+tags.dropna(axis=0, inplace=True)
+sns_plot = sns.pairplot(tags)
+sns_plot.savefig("images/user_categories.jpg")
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
@@ -94,7 +106,7 @@ ax.set_title("User Meal Category")
 ax.set_xlabel('Vegan Frequency')
 ax.set_ylabel('Vegetarian Frequency')
 ax.set_zlabel('Animal Frequency')
-plt.savefig("images/meal_cat_3d.jpg")
+plt.savefig("images/user_cat_3d.jpg")
 plt.show()
 
 
