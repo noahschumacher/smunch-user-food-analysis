@@ -79,7 +79,7 @@
 
 ### model:
 ##### data-prep.py:
-- Rudementary attempt to create ingredient frequency dataframe.
+- Rudimentary attempt to create ingredient frequency dataframe.
 - File groups base tables customer_id and meal_id and then uses loops to go through every ingredient in every meal for each customer.
 - Due to looping process ingredients with the same spelling and different capitalization are grouped together which is good.
 - Runs very slowly (only using for a subset of data right now)
@@ -97,7 +97,7 @@
 
 ##### tree_rating.py:
 - General file which does a grid search for both a Random Forrest and Gradient Boost Regressor Models. Best models are saved as pickle files.
-- Models are comparable but the Random Forrest is much faster at fitting.
+- Models are comparable but the Random Forest is much faster at fitting.
 - Results:
 	- Final RF MSE: 0.1581
 	- Final GB MSE: 0.1682
@@ -108,7 +108,7 @@
 	- Not a lot of data for fitting (only 657 meals with more than 5 ratings)
 
 ##### feature_importance.py:
-- File contains functions for calculating the permutation imporatance of a feature in a Random Forrest model and Partial Dependence of a feature given its name.
+- File contains functions for calculating the permutation importance of a feature in a Random Forrest model and Partial Dependence of a feature given its name.
 - Two main function which call other helper functions are:
 	- plot_partial_dependence(model, X_train, features, name)
 	- plot_perm_import(f_imps, names, n)
@@ -117,13 +117,24 @@
 	- Split data
 	- list of feature names
 
+##### rec.py:
+- nmf factorization model.
+
+##### rec_pickle_data.py:
+- two sql querries that return the information needed for the recommendation:
+	- One gets all user ratings.
+	- Another gets the avg rating for a particular meal.
+	- Should look into using the avg user rating not the avg meal rating.
+
 ### pickle:
 * feature_cols: list of ingredient names as they appear in the feature matrix X_features
 * gb_model: sklearn gradient boosted regressor model (unfit)
-* rf_model: sklearn random forrest regressor model (unfit)
+* rf_model: sklearn random forest regressor model (unfit)
 * user_f_df: pandas dataframe with each row as customer and cols as ingredients. Values in each cell are frequency that ingredient is in users dishes
 * X_features: np 2d array (meals = rows, cols = ingredients)
 * y_target: np 1d array of avg meal ratings. Used with X_features
+* avg_meal_ratingDF: pandas df with meals and their avg rating
+* cust_ratingsDF: pandas df with customer ratings of meals
 
 
 
