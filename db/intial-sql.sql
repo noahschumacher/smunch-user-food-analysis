@@ -13,6 +13,7 @@ CREATE TABLE noah.orders AS
 		product_name as meal_name,
 		rating_score as meal_rating
 	FROM bi.executed_order_employee
+	WHERE order_type = 'single'
 )
 
 -- Create meal ingredients table
