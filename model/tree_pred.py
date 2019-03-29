@@ -81,8 +81,8 @@ def gb_grid(X_train, y_train, X_test, y_test):
 
 if __name__ == '__main__':
 	
-	X = pickle.load(open('model/X_features.p', 'rb'))
-	y = pickle.load(open('model/y_target.p', 'rb'))
+	X = pickle.load(open('pickle/X_features.p', 'rb'))
+	y = pickle.load(open('pickle/y_target.p', 'rb'))
 
 	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2)
 
