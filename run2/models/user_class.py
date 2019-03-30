@@ -32,14 +32,8 @@ class User():
 		rows = []
 		for meal in meals:
 
-			row = []
-			for ing in self.ingredients:
-
-				if ing in self.meal_dict[meal]['ingredient_ids']:
-					row.append(1)
-				else:
-					row.append(0)
-
+			meal_ings = self.meal_dict[meal]['ingredient_ids']
+			row = np.array([ing in meal_ings for ing in self.ingredients]).astype(int)
 			rows.append(row)
 
 		self.X = np.vstack(rows)
