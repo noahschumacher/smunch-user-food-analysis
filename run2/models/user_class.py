@@ -4,14 +4,17 @@
 import numpy as np
 import pandas as pd
 
-from db.python_db import run_sql_query
+## local run sql file
+from db.python_db import connect, run_sql_query
 
 
 class User():
 
 	## Build the user class with just the ID
-	def __init__(self, user_id):
+	def __init__(self, user_id, account_id, connection):
 		self.user_id = user_id
+		self.account_id = account_id
+		self.connection = connection
 
 
 	def build_table(self):
@@ -24,7 +27,7 @@ class User():
 			- X: 2d numpy array (feature matrix)
 		'''
 
-		self.build_dictionary()	## Create meal_id: meal_count dict attribute
+		self._build_dictionary()	## Create meal_id: meal_count dict attribute
 		self._ingredients()  	## Create ingredients set attribute, Ingredient category set
 		
 		## Iterating through every meal and every ingredient.
@@ -50,7 +53,7 @@ class User():
 		self.ingredient_name = list(set(df.name.values))
 
 
-	def build_dictionary(self):
+	def _build_dictionary(self):
 		'''
 		Function: Builds the users meal dictionary.
 		- Format:
@@ -67,7 +70,7 @@ class User():
 		-------
 		- 2D numpy array with data
 		'''
-		Q = '''
+		Q1 = '''
 		WITH t1 as
 			(SELECT product_sfid as meal_id, COUNT(product_sfid) as meal_count
 			FROM bi.executed_order_employee
@@ -84,16 +87,40 @@ class User():
 		ON t1.meal_id = t2.meal_id
 		WHERE t2.ingredient_ids IS NOT NULL'''%self.user_id
 
-		df = run_sql_query(Q)
+		Q2 = '''
+		WITH t1 AS(
+			SELECT product_sfid as meal_id
+			FROM bi.executed_order_employee
+			WHERE account_sfid_order = '%s' and delivery_timestamp IN (
+				SELECT delivery_timestamp as deliv_tmstmp
+				FROM bi.executed_order_employee
+				WHERE contact_sfid = '%s' and order_type = 'single')
+			GROUP BY product_sfid, delivery_timestamp)
+
+		SELECT meal_id, COUNT(meal_id) as offered_count
+		FROM t1
+		GROUP BY meal_id'''%(self.account_id, self.user_id)
+
+
+		df1 = run_sql_query(Q1, self.connection)	## Table with users order history
+		df2 = run_sql_query(Q2, self.connection)	## Table with count of offered meals
+
+		df = pd.merge(df1, df2, how='left', on='meal_id')
 		df.set_index('meal_id', inplace=True)
-		self.y = df.meal_count.values
+		print(df)
+
+		df['order_f'] = df['meal_count']/df['offered_count']
+
+		self.y = df.order_f.values
 		self.meal_dict =  df.to_dict('index')
 
 
 
-
-user_id = '0030N00002LQqB9QAL'
-u1 = User(user_id)
-u1.build_table()
+# conn = connect()
+# print("Connected")
+# user_id = '0030N00002LQqB9QAL'
+# account_id = '0010N00004IaGG6QAN'
+# u1 = User(user_id, account_id, conn)
+# u1.build_table()
 
 
