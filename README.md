@@ -6,6 +6,45 @@ Smunch is a rapidly growing B2B Food Delivery service based out of Germany, with
 ### Motivation:
 As Smunch continues to expand and increase volume, it is extremely important to understand the trends and habits of their growing customer base. From a basic understanding of what meals are popular to an in-depth breakdown of what the key ingredients in meals, certain customers find most important, understanding what makes Smunch customers tick will allow Smunch to continuously improve their product and customer experience. More concretely having insights into key ingredients will allow Smunch to tailor meals to appeal to a wider customer base as well as increased order numbers. Understanding the factions or clusters of their customers and what they like will allow them to make sure each customer is presented with a good meal option every day. Other insights including identifying which customers are the most loyal and which customers churn or will allow for tailored efforts to increase customer retention and frequency of use. 
 
+### Structure:
+#### Clustering:
+  - This folder attempts to clusters users based on their ingredient preferences.
+  - Two types of clustering are used:
+    1. K-Means
+    2. Hierarchial
+  - From inspection K-Means seems to reveal the most about the clusters.
+  - The 3 significant clusters seem to be:
+    1. Protien, Dairy heavy
+    2. Vegan / Vegetarian
+    3. Seafood / Asian ingredients
+  - Other inspection is done on the hard labeled meals:
+    1. Vegan
+    2. Vegetarian
+    3. Animal Protien
+
+#### Average Meal Rating Prediction:
+  - Predicting the average rating of meal by users based on the ingredients in the meal.
+  - Several models attempted (listed in order of performance.)
+    1. Random Forrest Regressor 1% lower MSE
+    2. Gradient Boost Regressor 1% lower MSE
+    3. Baseline (Avg of all meal ratings)
+    4. Neural Network same as baseline.
+  - Not much signal in ingredients alone to make model significant.
+  - Realized ratings do not always depend on the quality or taste of the meal. In fact most bad ratings tend to come other factors besides taste. For example, delivery was late, meal was incorrect, meal was cold, etc.
+  - Need a better target value.
+
+#### Probabilty of Ordering Meal Prediction:
+  - Solution to bias present in the ratings.
+  - Target value is now $\frac{# of times ordered}{# of times offered}$
+  - Feature matrix are the ingredients the user has encountered.
+  - MSE is 8-12% lower than the guessing the average frequency of order.
+  - Each user has their own model (each user has different preferences)
+
+#### Recommender:
+  - Simple recommender systems uses NMF.
+  - Hidden user topics show insights into meal groups.
+
+
 ### Goals :
 Bellow are the desired outcomes of the Smunch Customer and Meal Analysis:
 
