@@ -32,9 +32,6 @@ def get_data():
 	meal_ingrds.to_csv('data/meal_ingrds.csv')
 	ingrds.to_csv('data/ingrds.csv')
 
-if __name__ == '__main__':
-	get_data()
-
 
 
 
