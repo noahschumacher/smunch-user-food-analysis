@@ -91,7 +91,7 @@ class User():
 		WITH t1 AS(
 			SELECT product_sfid as meal_id
 			FROM bi.executed_order_employee
-			WHERE account_sfid_order = '%s' and delivery_timestamp IN (
+			WHERE contact_account_sfid = '%s' and delivery_timestamp IN (
 				SELECT delivery_timestamp as deliv_tmstmp
 				FROM bi.executed_order_employee
 				WHERE contact_sfid = '%s' and order_type = 'single')
@@ -107,7 +107,8 @@ class User():
 
 		df = pd.merge(df1, df2, how='left', on='meal_id')
 		df.set_index('meal_id', inplace=True)
-		print(df)
+
+		df.dropna(inplace=True)
 
 		df['order_f'] = df['meal_count']/df['offered_count']
 
