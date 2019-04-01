@@ -3,16 +3,20 @@ import numpy as np
 
 import psycopg2
 
-
-## Function connects to Smunch DB and runs SQL querry returning a DataFrame
-def run_sql_query(query):
-
+## Establishes connection to smunch DB
+def connect():
 	with open('private/db_info.txt') as f:
 		content = f.readlines()
 	content = [x.strip('\n') for x in content]
 	
 	conn = psycopg2.connect(dbname=content[0], user=content[1], host=content[2],
 						   port=content[3], password=content[4])
+
+	return conn	
+
+
+## Runs SQL querry returning a DataFrame
+def run_sql_query(query, conn):
 	
 	df = pd.io.sql.read_sql_query(query, conn)
 	return df
