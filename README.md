@@ -35,7 +35,7 @@ As Smunch continues to expand and increase volume, it is extremely important to 
 
 #### Probabilty of Ordering Meal Prediction:
   - Solution to bias present in the ratings.
-  - Target value is now $\frac{# of times ordered}{# of times offered}$
+  - Target value is now # of times ordered / # of times offered
   - Feature matrix are the ingredients the user has encountered.
   - MSE is 8-12% lower than the guessing the average frequency of order.
   - Each user has their own model (each user has different preferences)
