@@ -1,5 +1,17 @@
 ## Neural Network Meal Rating Prediction
 
+'''
+File:
+	- Uses a Neural Network model to predict avg meal rating
+	- Hope was that NN hidden layers would uncover meaingful combination
+	of ingredients.
+	- Model performs worse than RF, GB
+
+Uses:
+	- X_features.p: Feature matrix of ingredients (row=meal, cols=ingrds)
+	- y_targets.p: Target values, avg rating of the meal.
+'''
+
 import numpy as np
 import pandas as pd
 import pickle
@@ -77,8 +89,8 @@ def rating_regress(X_tr, X_te, y_tr, y_te):
 
 if __name__ == '__main__':
 
-	X = pickle.load(open('run1/pickle/X_features.p', 'rb'))
-	y = pickle.load(open('run2/pickle/y_target.p', 'rb'))
+	X = pickle.load(open('rating_prediction/X_features.p', 'rb'))
+	y = pickle.load(open('rating_prediction/y_target.p', 'rb'))
 	
 	X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=.25, random_state=32)
 

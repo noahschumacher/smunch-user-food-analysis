@@ -1,3 +1,19 @@
+'''
+File:
+	- Creates avg rating matrix:
+		- Cols = Ingredients
+		- Rows = Meal
+	- Can specify to use mapped ingredient categories or not
+
+Uses:
+	- data/ing_to_cat.csv: mapping of specific ingredient to category
+	- basic created tables in smunch.noah db
+	
+Creates:
+	- X_features.p
+	- y_targets.p
+'''
+
 ## Initialization and imports
 import pandas as pd 
 import numpy as np 
@@ -176,9 +192,9 @@ if __name__ == '__main__':
 								   cat_map)
 
 
-	pickle.dump(list(ing_map.keys()), open('run1/pickle/feature_cols.p', 'wb'))
-	pickle.dump(X, open('run1/pickle/X_features.p', 'wb'))
-	pickle.dump(y, open('run1/pickle/y_target.p', 'wb'))
+	pickle.dump(list(ing_map.keys()), open('pickle/feature_cols.p', 'wb'))
+	pickle.dump(X, open('rating_prediction/X_features.p', 'wb'))
+	pickle.dump(y, open('rating_prediction/y_target.p', 'wb'))
 
 
 

@@ -1,5 +1,11 @@
-## This file creates a user object and get relevant
-## for creating a model.
+'''
+File:
+	- Defines a Smunch User class.
+	- build_table method:
+		- builds the user class with all info required for
+		predicting prob a user will order a dish given the
+		ingredients present in the dish.
+'''
 
 import numpy as np
 import pandas as pd

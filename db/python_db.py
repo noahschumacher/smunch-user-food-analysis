@@ -1,3 +1,9 @@
+'''
+This file:
+	- Is used for connection to the Smunch DB
+	and for performing querries on it.
+'''
+
 import pandas as pd
 import numpy as np
 

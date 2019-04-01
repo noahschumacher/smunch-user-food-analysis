@@ -1,3 +1,13 @@
+'''
+File:
+	- Used for testing and building tree models to predict
+	the probability a particular user will order a meal
+	given the meal was offered. 
+
+'''
+
+
+
 ## Initialization and imports
 import pandas as pd 
 import numpy as np
@@ -92,8 +102,8 @@ def gb_grid(X_train, y_train, X_test, y_test):
 
 
 if __name__ == '__main__':
-	user_id = '0030N00002LQqB9QAL'
-	account_id = '0010N00004IaGG6QAN'
+	user_id = '0030N00002LQq8gQAD'
+	account_id = '0010N00004IaEsqQAF'
 	u = User(user_id, account_id, conn)
 	u.build_table()
 
@@ -136,5 +146,7 @@ if __name__ == '__main__':
 
 	print("RF Model Test Error: {0:3.4f}  |  GB Model Test Error: {1:3.4f}".format(rf_me_test, gb_me_test)  )
 	print("Avg Test Error:", avg_me_test)
+
+	print("Model {0:2.3}% better than guessing avg.".format(100-(rf_me_test/avg_me_test)*100))
 
 

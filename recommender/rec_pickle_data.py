@@ -1,3 +1,15 @@
+'''
+File:
+
+Creates:
+	- cust_ratingDF.p:
+		- rows = A meal experience
+		- cols = cust_id, meal_id, meal_name, rating given
+	- avg_meal_ratingDF.p:
+		- Aggregated rating for meals
+			- Avg meal rating, count of ratings for meal.
+'''
+
 import pandas as pd
 import numpy as np
 import pickle
@@ -23,5 +35,5 @@ GROUP BY
 
 avg_rs = run_sql_query(querry)
 
-pickle.dump(cust_rs, open('run1/pickle/cust_ratingsDF.p', 'wb'))
-pickle.dump(avg_rs, open('run1/pickle/avg_meal_ratingDF.p', 'wb'))
+pickle.dump(cust_rs, open('recommender/cust_ratingsDF.p', 'wb'))
+pickle.dump(avg_rs, open('recommender/avg_meal_ratingDF.p', 'wb'))

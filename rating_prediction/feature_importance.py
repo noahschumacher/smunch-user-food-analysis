@@ -1,10 +1,11 @@
 ## Noah Schumacher
 
-
 '''
-File used for plotting permutation importances
-and partial depedence plots. Does not use sklearns
-functionality of feature importance.
+File:
+	- Used for plotting permutation importances
+	and partial depedence plots.
+	- Does not use sklearns functionality
+	of feature importance.
 '''
 
 import numpy as np
@@ -16,8 +17,6 @@ from sklearn.metrics import mean_squared_error
 
 from sklearn.ensemble.partial_dependence import plot_partial_dependence
 from sklearn.ensemble.partial_dependence import partial_dependence
-
-import pickle
 
 
 def permutation_importance(model, X_test, y_test, scorer=mean_squared_error):

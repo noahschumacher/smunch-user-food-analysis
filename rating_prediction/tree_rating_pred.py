@@ -1,3 +1,14 @@
+'''
+File:
+	- Creates the avg_meal_rating prediction model.
+	- Uses Random Forrest and Grandient Boosted model
+	- Performs grid search and pickles the models.
+
+Uses:
+	- X_features.p
+	- y_targets.p
+'''
+
 ## Initialization and imports
 import pandas as pd 
 import numpy as np 
@@ -46,7 +57,7 @@ def rf_grid(X_train, y_train, X_test, y_test):
 	best_rf_model = rf_gridsearch.best_estimator_
 
 	## Dumping the best model to a pickle file
-	pickle.dump(best_rf_model, open('run1/pickle/rf_model.p', 'wb'))
+	pickle.dump(best_rf_model, open('rating_prediction/rf_model.p', 'wb'))
 
 	return best_rf_model
 
@@ -73,7 +84,7 @@ def gb_grid(X_train, y_train, X_test, y_test):
 	best_gb_model = gb_gridsearch.best_estimator_
 
 	## Dumping the best model to a pickle file
-	pickle.dump(best_gb_model, open('run1/pickle/gb_model.p', 'wb'))
+	pickle.dump(best_gb_model, open('rating_prediction/gb_model.p', 'wb'))
 
 	return best_gb_model
 
@@ -81,8 +92,8 @@ def gb_grid(X_train, y_train, X_test, y_test):
 
 if __name__ == '__main__':
 	
-	X = pickle.load(open('run1/pickle/X_features.p', 'rb'))
-	y = pickle.load(open('run1/pickle/y_target.p', 'rb'))
+	X = pickle.load(open('rating_prediction/X_features.p', 'rb'))
+	y = pickle.load(open('rating_prediction/y_target.p', 'rb'))
 
 	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2)
 
