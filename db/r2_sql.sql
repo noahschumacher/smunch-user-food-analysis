@@ -51,3 +51,37 @@ LEFT JOIN t2
 ON t1.meal_id = t2.meal_id
 WHERE t2.ingredient_ids IS NOT NULL
 
+
+-- Getting the number of times meals have been offered to customer
+SELECT account_sfid_order, contact_sfid as user_id, delivery_timestamp as deliv_tmstmp
+FROM bi.executed_order_employee
+WHERE contact_sfid = '0030N00002LQqB9QAL' and order_type = 'single'
+
+SELECT product_name, count(product_name), delivery_timestamp
+FROM bi.executed_order_employee
+WHERE account_sfid_order = '0010N00004IaGG6QAN' and 
+	delivery_timestamp IN ('2017-12-12 10:30:00+00',
+						   '2018-09-27 10:30:00+00',
+						   '2019-01-09 11:30:00+00',
+						   '2018-04-04 08:30:00+00',
+						   '2017-12-12 10:30:00+00',
+						   '2018-09-20 10:30:00+00')
+GROUP BY product_name, delivery_timestamp
+
+
+-- Above two querries combined into one.
+WITH t1 AS(
+	SELECT product_sfid
+	FROM bi.executed_order_employee
+	WHERE account_sfid_order = '0010N00004IaGG6QAN' and 
+		delivery_timestamp IN (
+			SELECT delivery_timestamp as deliv_tmstmp
+			FROM bi.executed_order_employee
+			WHERE contact_sfid = '0030N00002LQqB9QAL' and order_type = 'single')
+	GROUP BY product_name, delivery_timestamp
+)
+SELECT t1.product_sfid, COUNT(t1.product_sfid)
+FROM t1
+GROUP BY t1.product_sfid
+
+
