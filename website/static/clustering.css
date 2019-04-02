@@ -1,0 +1,44 @@
+#HomeHeader{
+	background-color: #dc9191;
+	border: 5px dashed white;
+	margin: 25px;
+	padding: 25px;
+}
+
+#HomeHeader2{
+	background-color: #aff3a3;
+	border: 5px dashed green;
+	margin: 25px;
+	padding: 25px;
+}
+
+#Graphs{
+	background-color: #569fa7;
+	border: 5px dashed #252725;
+	margin: 25px;
+	padding: 25px;
+}
+
+#controls {
+    background-color: yellow;
+    border: 3px dashed green;
+    margin: 25px;
+    padding: 25px;
+}
+
+label {
+    display: inline-block;
+    width: 140px;
+}
+
+input {
+    background-color: white;
+    border: 1px solid red;
+    width: 40px;
+    ;
+}
+
+img {
+    height: 300px;
+    width: 420px;
+}

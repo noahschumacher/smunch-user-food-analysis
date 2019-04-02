@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Order Prediction</title>
+	<link rel='stylesheet', href='static/probability.css'>
+</head>
+
+<center>
+	<h1 id=HomeHeader>User Probability of Ordering</h1>
+</center>
+
+<body>This Page:</body>
+<ul>
+	<li>Generates user clusters based on specified number.</li>
+	<li>Gives information about each cluster (% of customer base, top ingredients, etc)</li>
+	<li>Display Silhoute Score of different number of clusters</li>
+	<li>Shows hard breakdown of Meat, Vegetarian, Vegan eaters</li>
+</ul>
+
+
+<div id='controls'>
+	<h2>User Information</h2>
+
+	<div>
+		<label>User ID</label>
+		<input id="user_id" type="text" value="0030N00002LQqB9QAL">
+	</div>
+
+	<div>
+		<label>Account ID</label>
+		<input id="account_id" type="text" value="0010N00004IaGG6QAN">
+	</div>
+
+	<div>
+		<button id='probOrder'>Probability User Will Order</button>
+		<input id='probability' type='number' readonly/>
+	</div>
+		
+</div>
+
+<ul><li><a href="/">Home</a></li></ul>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="static/probability.js"></script>
+
+
+</html>
