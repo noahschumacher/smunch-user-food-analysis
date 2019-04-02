@@ -52,21 +52,30 @@ def run_users_p(users):
 
 
 def sequential(user_acc_table, conn):
+	'''
+	Function: Sequentially goes through users and creates their objects
+	Params:
+	------
+	- user_acc_table: pandas df, with cols user_id, account_id, tot_meal_count
+	- conn: Smunch DB connection
+
+	Returns:
+	-------
+	- user_objects: dictionary with key as user_id and User object as value
+	'''
+	
 	user_objects = {}
 	for user in user_acc_table.values:
-		print(user)
 
 		user_id, account_id, count = user
 		if count > 100:
+			print(user, "Added")
 
-			user = User(user_id, account_id)
-			user.build_table(conn)
-			user.build_model()
+			user = User(user_id, account_id)	## Create the object
+			user.build_table(conn)				## Create user dictionary (targets and features)
+			user.build_model()					## Build random forrest model
 
 			user_objects[user_id] = user
-			print("Added")
-		else:
-			print("Not Added")
 
 	return user_objects
 
