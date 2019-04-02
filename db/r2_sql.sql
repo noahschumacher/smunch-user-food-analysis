@@ -85,3 +85,35 @@ FROM t1
 GROUP BY t1.product_sfid
 
 
+-- GENERALIZING THE ABOVE AND CREATING SEPERATE TABLE FOR SPEED --
+
+-- contact_sfid, meal_id, meal_count, ingredient_ids
+CREATE TABLE noah.user_order_ingredients AS
+(
+	WITH t1 as
+		(SELECT contact_sfid, product_sfid as meal_id, COUNT(product_sfid) as meal_count
+		FROM bi.executed_order_employee
+		GROUP BY contact_sfid, product_sfid),
+			
+	t2 as
+		(SELECT product__c as meal_id, ARRAY_AGG(ingredient__c) as ingredient_ids
+		FROM salesforce.product_ingredient__c
+		GROUP BY product__c)
+	
+	SELECT t1.contact_sfid, t1.meal_id, t1.meal_count, t2.ingredient_ids FROM t1
+	LEFT JOIN t2
+	ON t1.meal_id = t2.meal_id
+	WHERE t2.ingredient_ids IS NOT NULL
+)
+
+select * from noah.user_order_ingredients
+where contact_sfid = '0030N00002LQqB9QAL'
+
+
+
+SELECT contact_sfid, delivery_timestamp as deliv_tmstmp
+FROM bi.executed_order_employee
+WHERE order_type = 'single'
+GROUP BY contact_sfid
+
+
