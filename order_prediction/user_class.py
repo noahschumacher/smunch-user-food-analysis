@@ -17,13 +17,12 @@ from db.python_db import connect, run_sql_query
 class User():
 
 	## Build the user class with just the ID
-	def __init__(self, user_id, account_id, connection):
+	def __init__(self, user_id, account_id):
 		self.user_id = user_id
 		self.account_id = account_id
-		self.connection = connection
 
 
-	def build_table(self):
+	def build_table(self, conn):
 		'''
 		Function: Creates several object attributes:
 			- meal_dict: dictionary with meal count and ingredient info
@@ -33,7 +32,7 @@ class User():
 			- X: 2d numpy array (feature matrix)
 		'''
 
-		self._build_dictionary()	## Create meal_id: meal_count dict attribute
+		self._build_dictionary(conn)	## Create meal_id: meal_count dict attribute
 		self._ingredients()  	## Create ingredients set attribute, Ingredient category set
 		
 		## Iterating through every meal and every ingredient.
@@ -53,13 +52,13 @@ class User():
 		Function: Gets the unique ingredients shown
 		to a user.
 		'''
-		df = pd.read_csv('run1/data/ingrds.csv')
+		df = pd.read_csv('data/ingrds.csv')
 	
 		self.ingredients = list(df.ingredient_id.values)
 		self.ingredient_name = list(set(df.name.values))
 
 
-	def _build_dictionary(self):
+	def _build_dictionary(self, conn):
 		'''
 		Function: Builds the users meal dictionary.
 		- Format:
@@ -77,21 +76,8 @@ class User():
 		- 2D numpy array with data
 		'''
 		Q1 = '''
-		WITH t1 as
-			(SELECT product_sfid as meal_id, COUNT(product_sfid) as meal_count
-			FROM bi.executed_order_employee
-			WHERE contact_sfid = '%s'
-			GROUP BY product_sfid),
-				
-		t2 as
-			(SELECT product__c as meal_id, ARRAY_AGG(ingredient__c) as ingredient_ids
-			FROM salesforce.product_ingredient__c
-			GROUP BY product__c)
-
-		SELECT t1.meal_id, t1.meal_count, t2.ingredient_ids FROM t1
-		LEFT JOIN t2
-		ON t1.meal_id = t2.meal_id
-		WHERE t2.ingredient_ids IS NOT NULL'''%self.user_id
+		SELECT * FROM noah.user_order_ingredients
+		WHERE contact_sfid = '%s' '''%self.user_id
 
 		Q2 = '''
 		WITH t1 AS(
@@ -108,8 +94,8 @@ class User():
 		GROUP BY meal_id'''%(self.account_id, self.user_id)
 
 
-		df1 = run_sql_query(Q1, self.connection)	## Table with users order history
-		df2 = run_sql_query(Q2, self.connection)	## Table with count of offered meals
+		df1 = run_sql_query(Q1, conn)	## Table with users order history
+		df2 = run_sql_query(Q2, conn)	## Table with count of offered meals
 
 		df = pd.merge(df1, df2, how='left', on='meal_id')
 		df.set_index('meal_id', inplace=True)
