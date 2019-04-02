@@ -103,10 +103,10 @@ class User():
 
 		df = pd.merge(df1, df2, how='left', on='meal_id')
 		df.set_index('meal_id', inplace=True)
-
 		df.dropna(inplace=True)
 
-		df['order_f'] = df['meal_count']/df['offered_count']
+		## Creating target with smoothing factor of .25
+		df['order_f'] = df['meal_count']/ (df['offered_count']+.25)
 
 		self.y = df.order_f.values
 		self.meal_dict =  df.to_dict('index')
