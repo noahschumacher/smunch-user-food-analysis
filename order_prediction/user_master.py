@@ -1,4 +1,13 @@
+'''
+File:
+	- Pulls in user information from pickled df.
+	- Goes through and sequentially creates user objects.
+	- Stores user objects in dictionary with key as user_id.
+	- Pickles this dictionary.
 
+Note:
+	- Attempts to do this in || but sql querry limitations.
+'''
 
 import numpy as np
 import pandas as pd
@@ -40,6 +49,8 @@ def run_users_p(users):
 
 	return user_objects
 
+
+
 def sequential(user_acc_table, conn):
 	user_objects = {}
 	for user in user_acc_table.values:
@@ -50,6 +61,7 @@ def sequential(user_acc_table, conn):
 
 			user = User(user_id, account_id)
 			user.build_table(conn)
+			user.build_model()
 
 			user_objects[user_id] = user
 			print("Added")
