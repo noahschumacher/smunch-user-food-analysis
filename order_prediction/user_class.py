@@ -72,10 +72,14 @@ class User():
 		rf_model.fit(X_train, y_train)
 		rf_preds = rf_model.predict(X_test)
 		rf_mse_test = np.mean( (rf_preds-y_test)**2 )
-		avg_mse_test = np.mean( (.25-y_test)**2 )
+		avg_mse_test = np.mean( (np.mean(y_train)-y_test)**2 )
+		base_mse_test = np.mean( (.25-y_test)**2 )
 
 		self.model = rf_model
+		self.preds = rf_preds
 		self.mse = rf_mse_test
+		self.avg_mse = avg_mse_test
+		self.base_mse = base_mse_test
 		self.precent_improvement = percent = 100-(rf_mse_test/avg_mse_test)*100
 
 
