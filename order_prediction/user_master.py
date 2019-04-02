@@ -67,7 +67,8 @@ def sequential(user_acc_table, conn, sl=200):
 	sliced_users = user_acc_table.loc[user_acc_table.order_count > sl, :]
 
 	user_objects = {}
-	for user in sliced_users.values:
+
+	for i, user in enumerate(sliced_users.values):
 
 		print(user, "Building class...")
 		user_id, account_id, count = user
@@ -77,7 +78,7 @@ def sequential(user_acc_table, conn, sl=200):
 		user.build_model()					## Build random forrest model
 
 		user_objects[user_id] = user
-		print("Added")
+		print("Added", i+1)
 
 	return user_objects
 
@@ -87,7 +88,7 @@ if __name__ == '__main__':
 	conn = connect()
 	user_acc_table = pickle.load(open('order_prediction/user_account_order.p', 'rb'))
 
-	objs = sequential(user_acc_table, conn, 320)
+	objs = sequential(user_acc_table, conn, 150)
 	pickle.dump(objs, open('order_prediction/user_objects_dict.p', 'wb'))
 
 	#run_users_p(sliced_users.values)
