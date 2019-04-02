@@ -24,7 +24,7 @@ os.chdir('/Users/nschumacher/docs/galvanize/smunch-user-food-analysis')
 
 ## local run sql file
 from db.python_db import connect, run_sql_query
-from run2.models.user_class import User
+from order_prediction.user_class import User
 
 conn = connect()
 
@@ -104,13 +104,14 @@ def gb_grid(X_train, y_train, X_test, y_test):
 if __name__ == '__main__':
 	user_id = '0030N00002LQq8gQAD'
 	account_id = '0010N00004IaEsqQAF'
-	u = User(user_id, account_id, conn)
-	u.build_table()
+	u = User(user_id, account_id)
+	u.build_table(conn)
 
 
 	keeps = seen_ingredients(u)
 	X = u.X[:,keeps]
 	y = u.y
+	print(y)
 
 	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.15)
 
@@ -143,6 +144,7 @@ if __name__ == '__main__':
 	rf_me_test = np.mean( (rf_preds-y_test)**2 )**.5
 	gb_me_test = np.mean( (gb_preds-y_test)**2 )**.5
 	avg_me_test = np.mean( (np.mean(y_train)-y_test)**2 )**.5
+	#avg_me_test = np.mean( (.25-y_test)**2 )**.5
 
 	print("RF Model Test Error: {0:3.4f}  |  GB Model Test Error: {1:3.4f}".format(rf_me_test, gb_me_test)  )
 	print("Avg Test Error:", avg_me_test)

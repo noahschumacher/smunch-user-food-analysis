@@ -26,6 +26,8 @@ class User():
 		self.account_id = account_id
 
 
+	######################################################
+	#############    PUBLIC     #########################
 	def build_table(self, conn):
 		'''
 		Function: Creates several object attributes:
@@ -50,6 +52,35 @@ class User():
 
 		self.X = np.vstack(rows)
 		
+
+	def build_model(self):
+
+		keeps = self._seen_ingredients()
+		X = self.X[:,keeps]
+		y = self.y
+
+		X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2)
+
+		rf_model = RandomForestRegressor(bootstrap = False,
+										 max_depth = 10,
+										 max_features = 'sqrt',
+										 min_samples_leaf = 2,
+										 min_samples_split = 2,
+										 n_estimators = 150,
+										 random_state = 1)
+
+		rf_model.fit(X_train, y_train)
+		rf_preds = rf_model.predict(X_test)
+		rf_mse_test = np.mean( (rf_preds-y_test)**2 )
+		avg_mse_test = np.mean( (.25-y_test)**2 )
+
+		self.model = rf_model
+		self.mse = rf_mse_test
+		self.precent_improvement = percent = 100-(rf_mse_test/avg_mse_test)*100
+
+
+	######################################################
+	#############    PRIVATE     #########################
 
 	def _ingredients(self):
 		'''
@@ -101,15 +132,21 @@ class User():
 		df1 = run_sql_query(Q1, conn)	## Table with users order history
 		df2 = run_sql_query(Q2, conn)	## Table with count of offered meals
 
-		df = pd.merge(df1, df2, how='left', on='meal_id')
-		df.set_index('meal_id', inplace=True)
-		df.dropna(inplace=True)
+		df = pd.merge(df1, df2, how='left', on='meal_id')	## Merging on meal_id
+		df.set_index('meal_id', inplace=True)				## Setting meal_id as index
+		df.dropna(inplace=True)								## Drop rare NaN rows
+
 
 		## Creating target with smoothing factor of .25
-		df['order_f'] = df['meal_count']/ (df['offered_count']+.25)
+		df['order_f'] = np.round(df['meal_count']/ (df['offered_count']+.25), 3)
+
+		## Drop row where ordered>offered (issue with db accounts)
+		df = df.loc[df.order_f < 1, :]
 
 		self.y = df.order_f.values
-		self.meal_dict =  df.to_dict('index')
+		self.meal_dict = df.to_dict('index')
+
+
 
 	## Function gives list of ingredients user as has seen (remove never seen ingrds)
 	def _seen_ingredients(self):
@@ -121,32 +158,7 @@ class User():
 	            
 	    return keeps
 
-	def build_model(self):
 
-		keeps = self._seen_ingredients()
-		X = self.X[:,keeps]
-		y = self.y
-
-		X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2)
-
-		rf_model = RandomForestRegressor(bootstrap = False,
-										 max_depth = 10,
-										 max_features = 'sqrt',
-										 min_samples_leaf = 2,
-										 min_samples_split = 2,
-										 n_estimators = 150,
-										 random_state = 1)
-
-		rf_model.fit(X_train, y_train)
-		rf_preds = rf_model.predict(X_test)
-		rf_me_test = np.mean( (rf_preds-y_test)**2 )
-		avg_me_test = np.mean( (.25-y_test)**2 )
-
-		self.model = rf_model
-		self.mse = rf_me_test
-		self.precent_improvement = percent = 100-(rf_me_test/avg_me_test)*100
-		
-		
 
 # conn = connect()
 # print("Connected")

@@ -71,18 +71,17 @@ GROUP BY product_name, delivery_timestamp
 
 -- Above two querries combined into one.
 WITH t1 AS(
-	SELECT product_sfid
+	SELECT product_sfid as meal_id
 	FROM bi.executed_order_employee
-	WHERE account_sfid_order = '0010N00004IaGG6QAN' and 
-		delivery_timestamp IN (
-			SELECT delivery_timestamp as deliv_tmstmp
-			FROM bi.executed_order_employee
-			WHERE contact_sfid = '0030N00002LQqB9QAL' and order_type = 'single')
-	GROUP BY product_name, delivery_timestamp
-)
-SELECT t1.product_sfid, COUNT(t1.product_sfid)
+	WHERE contact_account_sfid = '0010N00004IaGxwQAF' and delivery_timestamp IN (
+		SELECT delivery_timestamp as deliv_tmstmp
+		FROM bi.executed_order_employee
+		WHERE contact_sfid = '0030N00002LQpucQAD' and order_type = 'single')
+	GROUP BY product_sfid, delivery_timestamp)
+
+SELECT meal_id, COUNT(meal_id) as offered_count
 FROM t1
-GROUP BY t1.product_sfid
+GROUP BY meal_id
 
 
 -- GENERALIZING THE ABOVE AND CREATING SEPERATE TABLE FOR SPEED --

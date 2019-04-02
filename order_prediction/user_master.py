@@ -51,7 +51,7 @@ def run_users_p(users):
 
 
 
-def sequential(user_acc_table, conn):
+def sequential(user_acc_table, conn, sl=200):
 	'''
 	Function: Sequentially goes through users and creates their objects
 	Params:
@@ -63,19 +63,21 @@ def sequential(user_acc_table, conn):
 	-------
 	- user_objects: dictionary with key as user_id and User object as value
 	'''
-	
+
+	sliced_users = user_acc_table.loc[user_acc_table.order_count > sl, :]
+
 	user_objects = {}
-	for user in user_acc_table.values:
+	for user in sliced_users.values:
 
+		print(user, "Building class...")
 		user_id, account_id, count = user
-		if count > 100:
-			print(user, "Added")
 
-			user = User(user_id, account_id)	## Create the object
-			user.build_table(conn)				## Create user dictionary (targets and features)
-			user.build_model()					## Build random forrest model
+		user = User(user_id, account_id)	## Create the object
+		user.build_table(conn)				## Create user dictionary (targets and features)
+		user.build_model()					## Build random forrest model
 
-			user_objects[user_id] = user
+		user_objects[user_id] = user
+		print("Added")
 
 	return user_objects
 
@@ -85,9 +87,7 @@ if __name__ == '__main__':
 	conn = connect()
 	user_acc_table = pickle.load(open('order_prediction/user_account_order.p', 'rb'))
 
-	sliced_users = user_acc_table.loc[user_acc_table.order_count > 360, :]
-
-	objs = sequential(sliced_users, conn)
+	objs = sequential(user_acc_table, conn, 320)
 	pickle.dump(objs, open('order_prediction/user_objects_dict.p', 'wb'))
 
 	#run_users_p(sliced_users.values)
