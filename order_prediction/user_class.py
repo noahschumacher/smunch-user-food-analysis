@@ -13,6 +13,10 @@ import pandas as pd
 ## local run sql file
 from db.python_db import connect, run_sql_query
 
+## sklearn models and validation
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+
 
 class User():
 
@@ -107,7 +111,42 @@ class User():
 		self.y = df.order_f.values
 		self.meal_dict =  df.to_dict('index')
 
+	## Function gives list of ingredients user as has seen (remove never seen ingrds)
+	def _seen_ingredients(self):
+	    rows, cols = self.X.shape
+	    keeps = []
+	    for i in range(cols):
+	        if (self.X[:,i] == 1).sum() != 0:
+	            keeps.append(i)
+	            
+	    return keeps
 
+	def build_model(self):
+
+		keeps = self._seen_ingredients()
+		X = self.X[:,keeps]
+		y = self.y
+
+		X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2)
+
+		rf_model = RandomForestRegressor(bootstrap = False,
+										 max_depth = 10,
+										 max_features = 'sqrt',
+										 min_samples_leaf = 2,
+										 min_samples_split = 2,
+										 n_estimators = 150,
+										 random_state = 1)
+
+		rf_model.fit(X_train, y_train)
+		rf_preds = rf_model.predict(X_test)
+		rf_me_test = np.mean( (rf_preds-y_test)**2 )
+		avg_me_test = np.mean( (.25-y_test)**2 )
+
+		self.model = rf_model
+		self.mse = rf_me_test
+		self.precent_improvement = percent = 100-(rf_me_test/avg_me_test)*100
+		
+		
 
 # conn = connect()
 # print("Connected")
