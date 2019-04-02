@@ -1,4 +1,9 @@
-
+'''
+File:
+	- One run only.
+	- Reads in user info from db and pickles it.
+	- Pickled df used in creting user classes and models.
+'''
 
 import pandas as pd
 import numpy as np
