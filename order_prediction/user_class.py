@@ -66,7 +66,7 @@ class User():
 		############################################################
 		################# AVG and BASE #############################
 		avg_mse_test  = np.mean( (np.mean(y_train)-y_test)**2 )
-		base_mse_test = np.mean( (.25-y_test)**2 )
+		base_mse_test = np.mean( (.125-y_test)**2 )
 		self.avg_mse = avg_mse_test
 		self.base_mse = base_mse_test
 
