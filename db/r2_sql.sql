@@ -137,3 +137,15 @@ WHERE order_type = 'single'
 GROUP BY contact_sfid
 
 
+-- Getting order counts of offered meals on particular day.
+with t1 as(
+SELECT product_sfid, product_name, restaurant_name, count(product_sfid), contact_account_name, contact_account_sfid
+FROM bi.executed_order_employee
+WHERE date(delivery_timestamp) = '2018-10-15' and order_type='single'
+GROUP BY product_sfid, product_name, restaurant_name, contact_account_sfid, contact_account_name)
+
+select t1.product_sfid, t1.product_name, t1.restaurant_name, sum(count)
+from t1
+group by t1.product_sfid, t1.product_name, t1.restaurant_name
+
+
