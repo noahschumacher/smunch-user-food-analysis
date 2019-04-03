@@ -83,7 +83,7 @@ if __name__ == '__main__':
 	conn = connect()
 
 	ing_df = pd.read_csv('data/ingrds.csv')
-	user_objs = pickle.load(open('order_prediction/user_objects_dict.p', 'rb'))
+	user_objs = pickle.load(open('order_prediction/user_objects_small_dict.p', 'rb'))
 
 	ing_dict = dict(zip(ing_df.ingredient_id, ing_df.name))
 	ing_ids = list(ing_dict.keys())
