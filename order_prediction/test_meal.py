@@ -7,57 +7,86 @@ import numpy as np
 import pandas as pd
 import pickle
 
-ing_df = pd.read_csv('data/ingrds.csv')
-
-ing_dict = dict(zip(ing_df.ingredient_id, ing_df.name))
-ing_ids = list(ing_dict.keys())
-ing_names = list(ing_dict.values())
+## local run sql file
+from db.python_db import connect, run_sql_query
 
 
-meal_ing_ids1 = np.random.choice(ing_ids, size=10, replace=False)
-meal_ing_ids2 = np.random.choice(ing_ids, size=10, replace=False)
 
-meal_ing_names1 = [ing_dict[key] for key in meal_ing_ids1]
-meal_ing_names2 = [ing_dict[key] for key in meal_ing_ids2]
+def get_rows(meals, ing_ids):
 
-print(meal_ing_names1)
-print(meal_ing_names2)
+	## Getting list of list of ingredients in meal
+	ingr_l = []
+	for meal in meals:
 
-## New Meal Rows
-row1 = np.array([ing in meal_ing_ids1 for ing in ing_ids]).astype(int)
-row2 = np.array([ing in meal_ing_ids2 for ing in ing_ids]).astype(int)
+		Q = '''
+		SELECT ingredient_ids
+		FROM noah.meal_rating_ingredients
+		WHERE meal_id='%s' '''%meal[0]
 
-rows = np.row_stack((row1,row2))
+		df = run_sql_query(Q, conn )
+		ingr_l.append(df.values[0][0])
 
-user_objs = pickle.load(open('order_prediction/user_objects_dict.p', 'rb'))
+	## converting each meal to feature space row
+	rows  = []
+	for ings in ingr_l:
+		rows.append( np.array([ing in ings for ing in ing_ids]).astype(int) )
 
-rf_preds = []
-gb_preds = []
-for key in user_objs.keys():
-	u = user_objs[key]
+	return np.vstack(rows)
 
-	rf_preds.append(u.rf_model.predict(rows))
-	gb_preds.append(u.gb_model.predict(rows))
 
-pref1, pref2 = 0, 0
-for i in range(len(rf_preds)):
-	rfp = rf_preds[i]
-	gbp = gb_preds[i]
+## Predicting meal consistency for all users
+def get_preds(objs, rows):
 
-	if rfp[0] > rfp[1]:
-		pref1 += 1
-	else:
-		pref2 += 1
+	rf_preds = []
+	gb_preds = []
+	for key in objs.keys():
+		u = objs[key]
 
-	print("       Meal 1  |  Meal 2")
-	print("RF:", rf_preds[i])
-	print("GB:", gb_preds[i])
-	print()
+		rf_preds.append(u.rf_model.predict(rows))
+		gb_preds.append(u.gb_model.predict(rows))
 
-print("{0:2.2f}% for Meal1, {1:2.2f}% for Meal2".format((pref1/len(rf_preds))*100, (pref2/len(rf_preds))*100))
+	return (rf_preds, gb_preds)
 
-rf_preds = np.matrix(rf_preds)
-gb_preds = np.matrix(gb_preds)
 
-print("RF Avg Scores:", np.mean(rf_preds, axis=0))
-print("GB Avg Scores:", np.mean(gb_preds, axis=0))
+## Getting user base breakdown
+def user_percent(preds, n_m):
+	counts = np.zeros(n_m)
+	for i in range(len(preds)):
+		sorts = np.argsort(preds[i])
+		counts[sorts[-1]] += 1
+	return np.round(np.array(counts)/sum(counts), 3)
+
+
+if __name__ == '__main__':
+	conn = connect()
+
+	ing_df = pd.read_csv('data/ingrds.csv')
+	user_objs = pickle.load(open('order_prediction/user_objects_dict.p', 'rb'))
+
+	ing_dict = dict(zip(ing_df.ingredient_id, ing_df.name))
+	ing_ids = list(ing_dict.keys())
+	ing_names = list(ing_dict.values())
+		
+	real = np.array([26,23,16,10])
+
+	meals = [('a050N00000zZg6AQAS',5,'0010N00004DQyrXQAT'),
+		 	 ('a050N00000zZg6BQAS',8,'0010N00004DQyrXQAT'),
+		 	 ('a050N00000zZgH1QAK',4,'0010N00004DQyrXQAT'),
+		 	 ('a050N00000zZgH5QAK',3,'0010N00004DQyrXQAT')]
+
+	rows = get_rows(meals, ing_ids)
+	rf_preds, gb_preds = get_preds(user_objs, rows)
+
+	rf_percents = user_percent(rf_preds, 4)
+	gb_percents = user_percent(gb_preds, 4)
+	real_p = np.round(real/real.sum(), 3)
+
+	print("RF Meal Percents:", rf_percents)
+	print("GB Meal Percents:", gb_percents)
+	print("\nAc Meal Percents:", real_p)
+
+	rf_error = np.mean(np.abs((rf_percents - real_p)))
+	gb_error = np.mean(np.abs((gb_percents - real_p)))
+	print("\nRF error:", rf_error, "GB error:", gb_error)
+
+
