@@ -15,7 +15,8 @@ from db.python_db import connect, run_sql_query
 
 ## sklearn models and validation
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor as RFReg
+from sklearn.ensemble import GradientBoostingRegressor as GBReg
 
 
 class User():
@@ -53,7 +54,7 @@ class User():
 		self.X = np.vstack(rows)
 		
 
-	def build_model(self):
+	def build_model_test(self):
 
 		# keeps = self._seen_ingredients()
 		# X = self.X[:,keeps]
@@ -73,13 +74,9 @@ class User():
 
 		#############################################################
 		############## RANDOM FOREST ################################
-		rf_model = RandomForestRegressor(bootstrap = False,
-										 max_depth = 10,
-										 max_features = 'sqrt',
-										 min_samples_leaf = 2,
-										 min_samples_split = 2,
-										 n_estimators = 150,
-										 random_state = 1)
+		rf_model = RFReg(bootstrap=False, max_depth=10, max_features='sqrt',
+						 min_samples_leaf=2, min_samples_split=2,
+						 n_estimators=150, random_state=1)
 
 		rf_model.fit(X_train, y_train)
 		rf_preds = rf_model.predict(X_test)
@@ -93,11 +90,8 @@ class User():
 
 		#############################################################
 		############## GRADIENT BOOST ###############################
-		gb_model = GradientBoostingRegressor(max_depth = 3,
-											 min_samples_leaf = 2,
-											 learning_rate = .01,
-											 min_samples_split = 2,
-											 n_estimators = 80)
+		gb_model = GBReg(max_depth=3, min_samples_leaf=2, learning_rate=.01,
+						 min_samples_split=2, n_estimators=80)
 
 		gb_model.fit(X_train, y_train)
 		gb_preds = gb_model.predict(X_test)
@@ -107,6 +101,27 @@ class User():
 		self.gb_preds = gb_preds
 		self.gb_mse = gb_mse_test
 		self.gb_precent_improvement = 100-(gb_mse_test/avg_mse_test)*100
+
+
+	## Build deployable models for actual use (RF bc better than GB)
+	def build_model_deploy(self):
+		'''
+		Function:
+		---------
+		- Build deployable user model (no train/test split).
+		- Uses Random Forrest model.
+		- Assigns model object to self.rf_model
+		'''
+
+		X, y = self.X, self.y
+
+		## RANDOM FOREST
+		rf_model = RFReg(bootstrap=False, max_depth=10, max_features='sqrt',
+						 min_samples_leaf=2, min_samples_split=2,
+						 n_estimators=150, random_state=1)
+
+		rf_model.fit(X, y)
+		self.rf_model = rf_model
 
 
 	######################################################
@@ -123,7 +138,7 @@ class User():
 		self.ingredient_name = list(set(df.name.values))
 
 
-	def _build_dictionary(self, conn):
+	def _build_dictionary(self, conn, drop_tests=True):
 		'''
 		Function: Builds the users meal dictionary.
 		- Format:
@@ -165,20 +180,6 @@ class User():
 		WHERE ingredients.ingredient_ids IS NOT NULL
 		GROUP BY offered.meal_id, ingredients.ingredient_ids'''%(self.account_id, self.user_id)
 
-		# Q2 = '''
-		# WITH t1 AS(
-		# 	SELECT product_sfid as meal_id
-		# 	FROM bi.executed_order_employee
-		# 	WHERE contact_account_sfid = '%s' and delivery_timestamp IN (
-		# 		SELECT delivery_timestamp as deliv_tmstmp
-		# 		FROM bi.executed_order_employee
-		# 		WHERE contact_sfid = '%s' and order_type = 'single')
-		# 	GROUP BY product_sfid, delivery_timestamp)
-
-		# SELECT meal_id, COUNT(meal_id) as offered_count
-		# FROM t1
-		# GROUP BY meal_id'''%(self.account_id, self.user_id)
-
 
 		df1 = run_sql_query(Q1, conn)	## Table with users order history
 		df2 = run_sql_query(Q2, conn)	## Table with count of offered meals
@@ -189,7 +190,7 @@ class User():
 		df.fillna(0, inplace=True)							## Fill NaN's with 0
 		df.set_index('meal_id', inplace=True)				## Setting meal_id as index
 
-		## Dropping test_meals
+		## Test_meals
 		test_meals = np.array(['a050N00000zZg6AQAS','a050N00000zZg6BQAS','a050N00000zZgH1QAK',
 						'a050N00000zZgH5QAK','a050N00000za4nlQAA','a050N00000za4nqQAA',
 						'a050N00000za4nvQAA','a050N00000za4o5QAA','a050N000010W5ezQAC',
@@ -202,9 +203,11 @@ class User():
 						'a050N000010W5f2QAC','a050N000010XxrMQAS','a050N000010XxrgQAC',
 						'a050N000010XxrvQAC','a050N000010XxfVQAS'])
 
-		## Checking if test meal has been seen by user (removing if not)
-		test_meals = test_meals[[meal in df.index.values for meal in test_meals]]
-		df.drop(test_meals, inplace=True)
+		## Drop tests meals paramters
+		if drop_tests:
+			## Checking if test meal has been seen by user (removing if not)
+			test_meals = test_meals[[meal in df.index.values for meal in test_meals]]
+			df.drop(test_meals, inplace=True)
 
 		## Creating target with smoothing factor of .25
 		df['order_f'] = np.round(df['meal_count']/ (df['offered_count']+.25), 3)
