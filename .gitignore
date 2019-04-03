@@ -2,3 +2,4 @@
 private/
 data/
 order_prediction/user_objects_dict.p
+order_prediction/user_objects_smal_dict.p
