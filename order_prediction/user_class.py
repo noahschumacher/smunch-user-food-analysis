@@ -29,7 +29,7 @@ class User():
 
 	######################################################
 	#############    PUBLIC     #########################
-	def build_table(self, conn):
+	def build_table(self, conn, drop_tests=False):
 		'''
 		Function: Creates several object attributes:
 			- meal_dict: dictionary with meal count and ingredient info
@@ -39,7 +39,7 @@ class User():
 			- X: 2d numpy array (feature matrix)
 		'''
 
-		self._build_dictionary(conn)	## Create meal_id: meal_count dict attribute
+		self._build_dictionary(conn, drop_tests)	## Create meal_id: meal_count dict attribute
 		self._ingredients()  	## Create ingredients set attribute, Ingredient category set
 		
 		## Iterating through every meal and every ingredient.
