@@ -84,6 +84,27 @@ FROM t1
 GROUP BY meal_id
 
 
+WITH offered AS(
+	SELECT product_sfid as meal_id
+	FROM bi.executed_order_employee
+	WHERE contact_account_sfid = '0010N00004IaGxwQAF' and delivery_timestamp IN (
+		SELECT delivery_timestamp as deliv_tmstmp
+		FROM bi.executed_order_employee
+		WHERE contact_sfid = '0030N00002LQpucQAD' and order_type = 'single')
+	GROUP BY product_sfid, delivery_timestamp),
+
+ingredients AS(
+	SELECT meal_id, ingredient_ids
+	FROM noah.meal_rating_ingredients)
+	
+SELECT offered.meal_id, COUNT(offered.meal_id) as offered_count, ingredients.ingredient_ids
+FROM offered
+LEFT JOIN ingredients
+ON offered.meal_id = ingredients.meal_id
+WHERE ingredients.ingredient_ids IS NOT NULL
+GROUP BY offered.meal_id, ingredients.ingredient_ids
+
+
 -- GENERALIZING THE ABOVE AND CREATING SEPERATE TABLE FOR SPEED --
 
 -- contact_sfid, meal_id, meal_count, ingredient_ids
