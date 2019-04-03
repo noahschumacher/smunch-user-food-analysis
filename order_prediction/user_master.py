@@ -88,8 +88,8 @@ if __name__ == '__main__':
 	conn = connect()
 	user_acc_table = pickle.load(open('order_prediction/user_account_order.p', 'rb'))
 
-	objs = sequential(user_acc_table, conn, 150)
-	pickle.dump(objs, open('order_prediction/user_objects_dict.p', 'wb'))
+	objs = sequential(user_acc_table, conn, 320)
+	pickle.dump(objs, open('order_prediction/user_objects_small_dict.p', 'wb'))
 
 	#run_users_p(sliced_users.values)
 
