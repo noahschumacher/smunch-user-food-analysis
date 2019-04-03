@@ -74,8 +74,9 @@ def sequential(user_acc_table, conn, sl=200):
 		user_id, account_id, count = user
 
 		user = User(user_id, account_id)	## Create the object
-		user.build_table(conn)				## Create user dictionary (targets and features)
-		user.build_model()					## Build random forrest model
+		user.build_table(conn, drop_tests=False)  ## Create user dictionary (targets and features)
+		user.build_model_test()			## Build RF and GB model for testing
+		user.build_model_deploy()		## Build Deployable RF (no train/test)
 
 		user_objects[user_id] = user
 		print("Added", i+1)
