@@ -60,7 +60,7 @@ class User():
 		X = self.X
 		y = self.y
 
-		X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.15)
+		X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.1)
 
 
 		############################################################
@@ -182,13 +182,29 @@ class User():
 
 		df1 = run_sql_query(Q1, conn)	## Table with users order history
 		df2 = run_sql_query(Q2, conn)	## Table with count of offered meals
-		#df2.dropna(inplace=True)
+		
 
 		df = pd.merge(df1, df2, how='right', on='meal_id')	## Merging on meal_id
 		df['contact_sfid'] = self.user_id					## Filling in user_id
 		df.fillna(0, inplace=True)							## Fill NaN's with 0
 		df.set_index('meal_id', inplace=True)				## Setting meal_id as index
 
+		## Dropping test_meals
+		test_meals = np.array(['a050N00000zZg6AQAS','a050N00000zZg6BQAS','a050N00000zZgH1QAK',
+						'a050N00000zZgH5QAK','a050N00000za4nlQAA','a050N00000za4nqQAA',
+						'a050N00000za4nvQAA','a050N00000za4o5QAA','a050N000010W5ezQAC',
+						'a050N00000zZfyqQAC','a050N00000zZfyrQAC','a050N000010W5eyQAC',
+						'a050N00000zbFdeQAE','a050N00000zbGCDQA2','a050N00000zbFdjQAE',
+						'a050N00000zbFdZQAU','a050N00000zZgH2QAK','a050N00000zZgH4QAK',
+						'a050N00000zZgH3QAK','a050N00000zZgH7QAK','a050N00000zbES4QAM',
+						'a050N00000zbESJQA2','a050N00000zZfz8QAC','a050N00000zbESEQA2',
+						'a050N00000zZg5LQAS','a050N00000zZg5MQAS','a050N000010W5f1QAC',
+						'a050N000010W5f2QAC','a050N000010XxrMQAS','a050N000010XxrgQAC',
+						'a050N000010XxrvQAC','a050N000010XxfVQAS'])
+
+		## Checking if test meal has been seen by user (removing if not)
+		test_meals = test_meals[[meal in df.index.values for meal in test_meals]]
+		df.drop(test_meals, inplace=True)
 
 		## Creating target with smoothing factor of .25
 		df['order_f'] = np.round(df['meal_count']/ (df['offered_count']+.25), 3)
