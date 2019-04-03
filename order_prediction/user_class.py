@@ -15,7 +15,7 @@ from db.python_db import connect, run_sql_query
 
 ## sklearn models and validation
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 
 
 class User():
@@ -55,12 +55,24 @@ class User():
 
 	def build_model(self):
 
-		keeps = self._seen_ingredients()
-		X = self.X[:,keeps]
+		# keeps = self._seen_ingredients()
+		# X = self.X[:,keeps]
+		X = self.X
 		y = self.y
 
-		X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2)
+		X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.15)
 
+
+		############################################################
+		################# AVG and BASE #############################
+		avg_mse_test  = np.mean( (np.mean(y_train)-y_test)**2 )
+		base_mse_test = np.mean( (.25-y_test)**2 )
+		self.avg_mse = avg_mse_test
+		self.base_mse = base_mse_test
+
+
+		#############################################################
+		############## RANDOM FOREST ################################
 		rf_model = RandomForestRegressor(bootstrap = False,
 										 max_depth = 10,
 										 max_features = 'sqrt',
@@ -71,16 +83,30 @@ class User():
 
 		rf_model.fit(X_train, y_train)
 		rf_preds = rf_model.predict(X_test)
-		rf_mse_test = np.mean( (rf_preds-y_test)**2 )
-		avg_mse_test = np.mean( (np.mean(y_train)-y_test)**2 )
-		base_mse_test = np.mean( (.25-y_test)**2 )
+		rf_mse_test   = np.mean( (rf_preds-y_test)**2 )
 
-		self.model = rf_model
-		self.preds = rf_preds
-		self.mse = rf_mse_test
-		self.avg_mse = avg_mse_test
-		self.base_mse = base_mse_test
-		self.precent_improvement = percent = 100-(rf_mse_test/avg_mse_test)*100
+		self.rf_model = rf_model
+		self.rf_preds = rf_preds
+		self.rf_mse = rf_mse_test
+		self.rf_precent_improvement = 100-(rf_mse_test/avg_mse_test)*100
+
+
+		#############################################################
+		############## GRADIENT BOOST ###############################
+		gb_model = GradientBoostingRegressor(max_depth = 3,
+											 min_samples_leaf = 2,
+											 learning_rate = .01,
+											 min_samples_split = 2,
+											 n_estimators = 80)
+
+		gb_model.fit(X_train, y_train)
+		gb_preds = gb_model.predict(X_test)
+		gb_mse_test   = np.mean( (gb_preds-y_test)**2 )
+		
+		self.gb_model = gb_model
+		self.gb_preds = gb_preds
+		self.gb_mse = gb_mse_test
+		self.gb_precent_improvement = 100-(gb_mse_test/avg_mse_test)*100
 
 
 	######################################################
@@ -115,30 +141,53 @@ class User():
 		- 2D numpy array with data
 		'''
 		Q1 = '''
-		SELECT * FROM noah.user_order_ingredients
+		SELECT * FROM noah.user_order_count
 		WHERE contact_sfid = '%s' '''%self.user_id
 
 		Q2 = '''
-		WITH t1 AS(
+		WITH offered AS(
 			SELECT product_sfid as meal_id
 			FROM bi.executed_order_employee
 			WHERE contact_account_sfid = '%s' and delivery_timestamp IN (
 				SELECT delivery_timestamp as deliv_tmstmp
 				FROM bi.executed_order_employee
 				WHERE contact_sfid = '%s' and order_type = 'single')
-			GROUP BY product_sfid, delivery_timestamp)
+			GROUP BY product_sfid, delivery_timestamp),
 
-		SELECT meal_id, COUNT(meal_id) as offered_count
-		FROM t1
-		GROUP BY meal_id'''%(self.account_id, self.user_id)
+		ingredients AS(
+			SELECT meal_id, ingredient_ids
+			FROM noah.meal_rating_ingredients)
+			
+		SELECT offered.meal_id, COUNT(offered.meal_id) as offered_count, ingredients.ingredient_ids
+		FROM offered
+		LEFT JOIN ingredients
+		ON offered.meal_id = ingredients.meal_id
+		WHERE ingredients.ingredient_ids IS NOT NULL
+		GROUP BY offered.meal_id, ingredients.ingredient_ids'''%(self.account_id, self.user_id)
+
+		# Q2 = '''
+		# WITH t1 AS(
+		# 	SELECT product_sfid as meal_id
+		# 	FROM bi.executed_order_employee
+		# 	WHERE contact_account_sfid = '%s' and delivery_timestamp IN (
+		# 		SELECT delivery_timestamp as deliv_tmstmp
+		# 		FROM bi.executed_order_employee
+		# 		WHERE contact_sfid = '%s' and order_type = 'single')
+		# 	GROUP BY product_sfid, delivery_timestamp)
+
+		# SELECT meal_id, COUNT(meal_id) as offered_count
+		# FROM t1
+		# GROUP BY meal_id'''%(self.account_id, self.user_id)
 
 
 		df1 = run_sql_query(Q1, conn)	## Table with users order history
 		df2 = run_sql_query(Q2, conn)	## Table with count of offered meals
+		#df2.dropna(inplace=True)
 
-		df = pd.merge(df1, df2, how='left', on='meal_id')	## Merging on meal_id
+		df = pd.merge(df1, df2, how='right', on='meal_id')	## Merging on meal_id
+		df['contact_sfid'] = self.user_id					## Filling in user_id
+		df.fillna(0, inplace=True)							## Fill NaN's with 0
 		df.set_index('meal_id', inplace=True)				## Setting meal_id as index
-		df.dropna(inplace=True)								## Drop rare NaN rows
 
 
 		## Creating target with smoothing factor of .25

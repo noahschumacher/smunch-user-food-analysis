@@ -76,12 +76,12 @@ def rf_grid(X_train, y_train, X_test, y_test):
 
 ## Performing grid search on gradient boost to find best params
 def gb_grid(X_train, y_train, X_test, y_test):
-	gb_grid = {'max_depth': [3, 5, 10],
-			  'learning_rate': [.05, .01],
+	gb_grid = {'max_depth': [2, 3, 5],
+			  'learning_rate': [.01, .005],
               'min_samples_split': [2, 3],
               'max_depth': [3, 5],
               'min_samples_leaf': [1, 2, 4],
-              'n_estimators': [20, 50, 100],
+              'n_estimators': [50, 100, 200],
               'random_state': [1]}
 
 	gb_gridsearch = GridSearchCV(GradientBoostingRegressor(),
@@ -109,11 +109,13 @@ if __name__ == '__main__':
 
 
 	keeps = seen_ingredients(u)
-	X = u.X[:,keeps]
+	#X = u.X[:,keeps]
+	X = u.X
 	y = u.y
 	print(y)
 
 	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.15)
+	print(y_train)
 
 	#rf_model = rf_grid(X_train, y_train, X_test, y_test)
 	rf_model = RandomForestRegressor(bootstrap = False,
@@ -130,7 +132,7 @@ if __name__ == '__main__':
 										 min_samples_leaf = 2,
 										 learning_rate = .01,
 										 min_samples_split = 2,
-										 n_estimators = 40)
+										 n_estimators = 80)
 
 	#print("Cross Val ME RF:", cross_val(X_train, y_train, rf_model)**.5)
 	#print("Cross Val ME GB:", cross_val(X_train, y_train, gb_model)**.5)
@@ -141,14 +143,15 @@ if __name__ == '__main__':
 	rf_preds = rf_model.predict(X_test)
 	gb_preds = gb_model.predict(X_test)
 
-	rf_me_test = np.mean( (rf_preds-y_test)**2 )**.5
-	gb_me_test = np.mean( (gb_preds-y_test)**2 )**.5
-	avg_me_test = np.mean( (np.mean(y_train)-y_test)**2 )**.5
+	rf_me_test = np.mean( (rf_preds-y_test)**2 )
+	gb_me_test = np.mean( (gb_preds-y_test)**2 )
+	avg_me_test = np.mean( (np.mean(y_train)-y_test)**2 )
 	#avg_me_test = np.mean( (.25-y_test)**2 )**.5
 
 	print("RF Model Test Error: {0:3.4f}  |  GB Model Test Error: {1:3.4f}".format(rf_me_test, gb_me_test)  )
 	print("Avg Test Error:", avg_me_test)
 
-	print("Model {0:2.3}% better than guessing avg.".format(100-(rf_me_test/avg_me_test)*100))
+	print("RF Model {0:2.3}% better than guessing avg.".format(100-(rf_me_test/avg_me_test)*100))
+	print("GB Model {0:2.3}% better than guessing avg.".format(100-(gb_me_test/avg_me_test)*100))
 
 
