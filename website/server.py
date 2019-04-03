@@ -44,7 +44,7 @@ def probability():
 
 
 ## Getting predicted probability of order based on ingredients.
-@app.route('/predictProba', methods = ['POST'])
+@app.route('/addMealCol', methods = ['POST'])
 def predictProba():
 	req = request.get_json()
 	print(req)
