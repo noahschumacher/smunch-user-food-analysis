@@ -4,3 +4,5 @@ data/
 order_prediction/user_objects_dict.p
 order_prediction/user_objects_small_dict.p
 order_prediction/user_objects_deployable_dict.p
+order_prediction/user_objects_test_dict.p
+
