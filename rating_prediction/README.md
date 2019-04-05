@@ -25,4 +25,4 @@ Ex:
 #### Issue and Solution:
   - Not much signal in ingredients alone to make model get significant results.
   - Realized ratings do not always depend on the quality or taste of the meal. In fact most bad ratings tend to come other factors besides taste. For example, delivery was late, meal was incorrect, meal was cold, etc.
-  - Need a better target value --> [cluster folder link](https://github.com/noahschumacher/smunch-user-food-analysis/tree/master/clustering "Clustering Folder")
+  - Need a better target value --> [order prediction folder link](https://github.com/noahschumacher/smunch-user-food-analysis/tree/master/order_prediction "Probability Of Order Prediction Folder")
