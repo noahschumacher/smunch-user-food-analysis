@@ -14,16 +14,25 @@ As Smunch continues to expand and increase volume, it is extremely important to 
     2. Hierarchial
   - From inspection K-Means seems to reveal the most about the clusters.
   - The 3 significant clusters seem to be:
-    1. Protien, Dairy heavy
-    2. Vegan / Vegetarian
-    3. Seafood / Asian ingredients
+    1. Protien, Dairy heavy: 48.90%
+    2. Vegan / Vegetarian: 39.71%
+    3. Seafood / Asian ingredients: 11.39%
+  - Dimensionality Reduction:
+    1. PCA and tSNE dimensionality reduction were performed on the clusters.
+    2. For both PCA and tSNE 2D and 3D plots were generated to help visualize the these clusters.
+  - Cluster Profile Analysis:
+    1. Radar plots for each cluster were created to help Smunch identify and use the important ingredients for each cluster.
+    2. Thes Radar plots have been generated for 3 cluster groups (more to be made soon)
   - Other inspection is done on the hard labeled meals:
-    1. Vegan
-    2. Vegetarian
-    3. Animal Protien
+    1. From manually assigned meals in Smunch DB the meal group breakdowns are as follows
+    1. Vegan: 2.2%
+    2. Vegetarian / Vegan: 11% 
+    3. Animal Protien: 10%
 
 #### Average Meal Rating Prediction:
   - Predicting the average rating of meal by users based on the ingredients in the meal.
+  - Feature and Target Description:
+    - Example Table:
   - Several models attempted (listed in order of performance.)
     1. Random Forrest Regressor 1% lower MSE
     2. Gradient Boost Regressor 1% lower MSE
@@ -37,11 +46,21 @@ As Smunch continues to expand and increase volume, it is extremely important to 
   - Solution to bias present in the ratings.
   - Target value is now # of times ordered / # of times offered
   - Feature matrix are the ingredients the user has encountered.
-  - MSE is 8-12% lower than the guessing the average frequency of order.
-  - Each user has their own model (each user has different preferences)
+  - Each user has their own model (each user has different ingredient preferences)
+  - How it works:
+    1. Present put x number of meals into user model.
+    2. Assign meal to user with largest target value.
+    3. Repeat for all users.
+    4. Take # of users assigned each meal and divide by total # os users in model.
+    5. Output: is the % of customer base who will order each meal.
+  - Performance:
+    1. When given four meal options model predicts customer % breakdown for each meal within 8%
+    2. Baseline for four meal options is simply 25% for each meal.
+    3. Model performs 20% better than baseline.
 
-#### Recommender:
+#### Recommender (not focus of this project!!):
   - Simple recommender systems uses NMF.
+  - Performance is poor currently.
   - Hidden user topics show insights into meal groups.
 
 
