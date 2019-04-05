@@ -1,9 +1,3 @@
-
-
-import numpy as np
-import pandas as pd
-import pickle
-
 '''
 File:
 	- Will allow for testing new meal, ingredients.
@@ -13,8 +7,7 @@ import numpy as np
 import pandas as pd
 import pickle
 
-
-def create_row(meals, ing_ids):
+def create_rows(meals, ing_ids):
 
 	rows = []
 	for meal in meals:
@@ -47,7 +40,7 @@ def user_percent(preds, n_m):
 
 ## Run the functions
 def get_customer_percents(ing_dict, ing_ids, ing_names, user_objs, meals):
-	rows = create_row(meals, ing_ids)
+	rows = create_rows(meals, ing_ids)
 	preds = get_preds(user_objs, rows)
 	user_percents = user_percent(preds, len(meals))
 

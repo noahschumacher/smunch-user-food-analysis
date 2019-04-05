@@ -64,7 +64,7 @@ class User():
 		X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.1)
 
 
-		############################################################
+		
 		################# AVG and BASE #############################
 		avg_mse_test  = np.mean( (np.mean(y_train)-y_test)**2 )
 		base_mse_test = np.mean( (.125-y_test)**2 )
@@ -72,7 +72,7 @@ class User():
 		self.base_mse = base_mse_test
 
 
-		#############################################################
+		
 		############## RANDOM FOREST ################################
 		rf_model = RFReg(bootstrap=False, max_depth=10, max_features='sqrt',
 						 min_samples_leaf=2, min_samples_split=2,
@@ -88,7 +88,7 @@ class User():
 		self.rf_precent_improvement = 100-(rf_mse_test/avg_mse_test)*100
 
 
-		#############################################################
+		
 		############## GRADIENT BOOST ###############################
 		gb_model = GBReg(max_depth=3, min_samples_leaf=2, learning_rate=.01,
 						 min_samples_split=2, n_estimators=80)
