@@ -8,60 +8,23 @@ As Smunch continues to expand and increase volume, it is extremely important to 
 
 ### Structure:
 #### Clustering:
-  - This folder attempts to clusters users based on their ingredient preferences.
-  - Two types of clustering are used:
-    1. K-Means
-    2. Hierarchial
-  - From inspection K-Means seems to reveal the most about the clusters.
-  - The 3 significant clusters seem to be:
-    1. Protien, Dairy heavy: 48.90%
-    2. Vegan / Vegetarian: 39.71%
-    3. Seafood / Asian ingredients: 11.39%
-  - Dimensionality Reduction:
-    1. PCA and tSNE dimensionality reduction were performed on the clusters.
-    2. For both PCA and tSNE 2D and 3D plots were generated to help visualize the these clusters.
-  - Cluster Profile Analysis:
-    1. Radar plots for each cluster were created to help Smunch identify and use the important ingredients for each cluster.
-    2. Thes Radar plots have been generated for 3 cluster groups (more to be made soon)
-  - Other inspection is done on the hard labeled meals:
-    1. From manually assigned meals in Smunch DB the meal group breakdowns are as follows
-    1. Vegan: 2.2%
-    2. Vegetarian / Vegan: 11% 
-    3. Animal Protien: 10%
+  - This folder attempts to clusters users based on their ingredient preferences. 
+  - [cluster folder link](https://github.com/noahschumacher/smunch-user-food-analysis/tree/master/clustering "Clustering Folder")
 
 #### Probabilty of Ordering Meal Prediction:
-  - Solution to bias present in the ratings.
-  - Target value is now # of times ordered / # of times offered
-  - Feature matrix are the ingredients the user has encountered.
-  - Each user has their own model (each user has different ingredient preferences)
-  - How it works:
-    1. Present put x number of meals into user model.
-    2. Assign meal to user with largest target value.
-    3. Repeat for all users.
-    4. Take # of users assigned each meal and divide by total # os users in model.
-    5. Output: is the % of customer base who will order each meal.
-  - Performance:
-    1. When given four meal options model predicts customer % breakdown for each meal within 8%
-    2. Baseline for four meal options is simply 25% for each meal.
-    3. Model performs 20% better than baseline.
+  - Folder contains model and information for predicting the successfulness of a meal compared to other offered meals.
+  - [order prediction folder link](https://github.com/noahschumacher/smunch-user-food-analysis/tree/master/order_prediction "Probability Of Order Prediction Folder")
 
 #### Average Meal Rating Prediction:
   - Predicting the average rating of meal by users based on the ingredients in the meal.
-  - Feature and Target Description:
-    - Example Table:
-  - Several models attempted (listed in order of performance.)
-    1. Random Forrest Regressor 1% lower MSE
-    2. Gradient Boost Regressor 1% lower MSE
-    3. Baseline (Avg of all meal ratings)
-    4. Neural Network same as baseline.
-  - Not much signal in ingredients alone to make model significant.
-  - Realized ratings do not always depend on the quality or taste of the meal. In fact most bad ratings tend to come other factors besides taste. For example, delivery was late, meal was incorrect, meal was cold, etc.
-  - Need a better target value.
+  - [rating prediction link](https://github.com/noahschumacher/smunch-user-food-analysis/tree/master/rating_prediction "Rating of Meal Prediction Folder")
 
 #### Recommender (not focus of this project!!):
   - Simple recommender systems uses NMF.
+  - Needs a lot of work until usable.
   - Performance is poor currently.
   - Hidden user topics show insights into meal groups.
+  - [meal recommender folder link](https://github.com/noahschumacher/smunch-user-food-analysis/tree/master/recommender "Recomender Folder")
 
 
 ### Goals :
