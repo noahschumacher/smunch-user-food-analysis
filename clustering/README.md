@@ -35,10 +35,12 @@ Based on this plot and inspection of clusters, 3 and 5 are the most insightful n
 #### Dimensionality Reduction using PCA and tSNE (For Plotting Purposes)
 To get a sense of how these clusters are forming we can use PCA or tSNE to lower the dimensionality of the features to 2 or 3 dimensions.
  - PCA Results: The amount of variance accounted for by x number of principal components is as follows:
-![PCA Variance Explained](images/pca_variance_explained.png)
+![PCA Variance Explained](images/pca_variance.png)
 
 Using the first three principal compenents and plotting a subset of the user clusters, we get the below:
-![PCA 3D Cluster Plot](images/pca_3d_3cluster.png)
+![PCA 3D Cluster Plot](images/pca_3d_3clusters.png)
+
+tSNE was performed and images are located in the images folder. Results of tSNE were not as clear as PCA however.
 
 
 #### Most Important Ingredient Inspection:
@@ -63,11 +65,16 @@ From Kmeans clustering with 3 clusters we get these distinct user groups and the
 |14				      |paste		    |fruit	    	|corn      |
 
 Based on these ingredients we can loosely name each cluster and the the clustering gives the percent of the customer base assigned to each:
+
 | Cluster |                 Name                  | Percent of Customer Base | 
 |---------|---------------------------------------|--------------------------|
 |    1    | Asian / Seafood cluster               |           11.39%         |
 |    2    | Vegan / Vegetarian ("healthy") cluster|           39.71%         |
 |    3    | Meat Protien / Dairy ("heavy") cluster|           48.90%         |
+
+
+#### Radar Plot Inspection of Clusters
+To get a better sense of the "profile" of each cluster, radar plots were created. It is important to note that the features are not related to one another so the "shape" of the plot should not be strongly taken into account. However I did try to group similar ingredients next to eachother on the perimeter to allow for some interpretation.
 
 
 
