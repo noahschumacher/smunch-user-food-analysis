@@ -10,25 +10,32 @@
 
 <body>
 
-	<h1 id='HomeHeader'>
-		<center>Smunch User Segmentation and Meal Analysis</center></h1>
-
 	<center>
 		<img src="https://www.collecapital.com/wp-content/uploads/2019/02/smunch-300x129.jpg">
 	</center>
 
 	<div id=HomeHeader2>
-		<p>Pages:</p>
-		<li><a href="/clustering">Clustering</a></li>
-		<li><a href="/recommender">Recommender</a></li>
-		<li><a href="/probability">Probabilty of Order Predictor</a></li>
-		<li><a href="/rating-prediction">Rating Predictor</a></li>
+		<center>
+			<h1 id=HomeHeader>Meal Successfulness Comparison</h1>
+		</center>
 
+		<div id='controls'>
+			<h2>This Page:</h2>
+			<ul>
+				<li>Compares created meals and outputs predicted percent of customer base that will order each meal.</li>
+				<li>To compare meal successfulness upload meal csv with each column as a meal and each cell an ingredient ID.to compare meal successfulness.</li>
+			</ul>
+			<div>
+	      <form id="upload_form" action = "http://localhost:3333/uploader" method="POST" 
+	         enctype = "multipart/form-data">
+	         <input type = "file" name = "file" />
+	         <input type = "submit"/>
+	      </form>
+			</div>
+		</div>
 	</div>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="static/home.js"></script>
-
 </body>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="static/home.js"></script>
 </html>

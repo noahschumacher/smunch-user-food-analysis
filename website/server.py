@@ -1,9 +1,11 @@
 ## Server Flask File
 
 from flask import Flask, render_template, request, jsonify, Response
+
 import pickle
 import numpy as np
 import pandas as pd
+import os
 
 
 ## Create the app object that will route our calls
@@ -11,66 +13,49 @@ app = Flask(__name__)
 
 
 ## Rendering the home page HTML
-@app.route('/', methods = ['GET'])
+@app.route('/', methods=['GET'])
 def home():
 	return render_template('home.html')
 
 
-#########################################################
-########## CLUSTERING ########################
-@app.route('/clustering', methods = ['GET'])
-def clustering():
-	return render_template('clustering.html')
+## File uploader
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+@app.route('/uploader', methods=['GET', 'POST'])
+def uploader():
+	if request.method == 'POST':
+		target = os.path.join(APP_ROOT, 'temp_files/')
 
+		file = request.files['file']
+		filename = file.filename
+		destination = '/'.join([target, filename])
+		file.save(destination)
 
-## Rending the user cluster table
-@app.route('/renderClusters', methods = ['POST'])
-def renderClusters():
-	req = request.get_json()
-	print(req)
-
-	## Getting params from request
-	n = req['n_clusters']
-
-	## Returning json formatted output (.js file grabs 'prediction')
-	return jsonify({'n':n})
-
-
-#########################################################
-########## PROBABILITY OF ORDER ########################
-@app.route('/probability', methods = ['GET'])
-def probability():
-	return render_template('probability.html')
-
-
-## Getting predicted probability of order based on ingredients.
-@app.route('/addMealCol', methods = ['POST'])
-def predictProba():
-	req = request.get_json()
-	print(req)
-
-	## Getting params from request
-	u_id, a_id = req['user_id'], req['account_id']
-	print(u_id)
-
-	## Returning json formatted output (.js file grabs 'prediction')
-	return jsonify({'user_id':u_id, 'account_id':a_id})
+		return "File Saved to Temp"
 
 
 
-#########################################################
-########## AVG RATING PREDICTION ########################
-@app.route('/rating-prediction', methods = ['GET'])
-def rating_prediction():
-	return render_template('rating-prediction.html')
+
+# #########################################################
+# ########## PROBABILITY OF ORDER ########################
+
+# @app.route('/probability', methods=['GET'])
+# def probability():
+# 	return render_template('probability.html')
 
 
+# ## Getting predicted probability of order based on ingredients.
+# @app.route('/addMealCol', methods=['POST'])
+# def predictProba():
+# 	req = request.get_json()
+# 	print(req)
 
-#########################################################
-############### RECOMMENDER ########################
-@app.route('/recommender', methods = ['GET'])
-def recommender():
-	return render_template('recommender.html')
+# 	## Getting params from request
+# 	u_id, a_id = req['user_id'], req['account_id']
+# 	print(u_id)
+
+# 	## Returning json formatted output (.js file grabs 'prediction')
+# 	return jsonify({'user_id':u_id, 'account_id':a_id})
+
 
 
 if __name__ == '__main__':
