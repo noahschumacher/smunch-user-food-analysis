@@ -2,6 +2,7 @@
 
 #### Background
 This part of the project allows Smunch to predict the "successfulness" of dish. Because Smunch's meal setup is offerering either 4 or 8 meals a day to each company, it would be very hard to create a general "successfulness" metric on a standalone meal. The goal here is predict the "successfulness" of a meal compared to the other meals offered. More concretely we define our target to be:
+
 	- "Successfulness" = Percent of customer who order the dish / Number of total customers who ordered
 
 The model built in this folder predicts this value based on the ingredient preferences of each user.
