@@ -56,8 +56,6 @@ class User():
 
 	def build_model_test(self):
 
-		# keeps = self._seen_ingredients()
-		# X = self.X[:,keeps]
 		X = self.X
 		y = self.y
 
@@ -233,12 +231,5 @@ class User():
 	    return keeps
 
 
-
-# conn = connect()
-# print("Connected")
-# user_id = '0030N00002LQqB9QAL'
-# account_id = '0010N00004IaGG6QAN'
-# u1 = User(user_id, account_id, conn)
-# u1.build_table()
 
 
