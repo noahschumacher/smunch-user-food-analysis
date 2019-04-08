@@ -157,7 +157,7 @@ Based on these ingredients we can loosely name each cluster and the the clusteri
 <a name="clust_radar"/>
 
 ### Radar Plot Inspection of Clusters
-To get a better sense of the "profile" of each cluster, radar plots were created. It is important to note that the features are not related to one another so the "shape" of the plot should not be strongly taken into account. However I did try to group similar ingredients next to eachother on the perimeter to allow for some interpretation. These images are available for inspection in the ![cluster images](clustering/images/) folder.
+To get a better sense of the "profile" of each cluster, radar plots were created. It is important to note that the features are not related to one another so the "shape" of the plot should not be strongly taken into account. However I did try to group similar ingredients next to eachother on the perimeter to allow for some interpretation. These images are available for inspection in the cluster images folder.
 
 
 |        Meat Cluster      |      Vegan/Vegetarian Cluster     |     Asian/Seafood Cluster     | 
@@ -226,7 +226,7 @@ Our Final Prediction is:
 ### Model
 The final model used for this prediction is a Random Forest Regressor. It performance is 20% superior to the baseline guess of equal % of customer base for every offered meal. More specifically, on average the Random Forest customer % prediction is +-8%. The below chart shows a comparison of a Random Forest, Gradient Boost, and the Baseline.
 
-![Model Performance](order_prediction/images/customer_percent_model.png)
+![Model Performance](order_prediction/images/model_perform.png)
 
 - This plot shows the residuals of each model.
 - Ideally the residuals would be 0 (orange vertical line)
