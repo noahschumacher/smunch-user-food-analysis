@@ -22,17 +22,15 @@ def home():
 
 
 ## File uploader
-#APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 @app.route('/uploader', methods=['GET', 'POST'])
 def uploader():
 	if request.method == 'POST':
-		#target = os.path.join(APP_ROOT, 'temp_files/')
 		target = 'temp_files'
 
 		file = request.files['file']
 		filename = file.filename
-		destination = '/'.join([target, filename])
-		#file.save(destination)
+		destination = '/'.join([target, 'meal_pred.csv'])
+		file.save(destination)
 
 		meals = pd.read_csv(destination)
 		meals.drop(['Unnamed: 0', 'Meals'], axis=1, inplace=True)
@@ -60,6 +58,8 @@ if __name__ == '__main__':
 
 	## Getting the user objects
 	user_objs = pickle.load(open('order_prediction/pickles/user_objects_deployable_dict.p', 'rb'))
+
+
 
 	print("Starting server...")
 	app.run(host='0.0.0.0', port=3333, debug=True, use_reloader=False)
