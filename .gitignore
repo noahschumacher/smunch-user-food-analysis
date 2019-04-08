@@ -7,5 +7,5 @@ __pycache__/
 clustering/__pycache__/
 clustering/.ipynb_checkpoints/
 db/__pycache__/
-
+temp_files/
 
