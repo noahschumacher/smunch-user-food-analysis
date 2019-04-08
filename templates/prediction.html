@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title> Prediction </title>
+	<link rel='stylesheet', href='static/home.css'>
+</head>
+
+<body>
+	<center>
+		<img src="https://www.collecapital.com/wp-content/uploads/2019/02/smunch-300x129.jpg">
+	</center>
+
+	<div id=HomeHeader2>
+		<center>
+			<h1 id=HomeHeader>Meal Predictions</h1>
+		</center>
+
+		<div id='controls'>
+			<h2>Below are the predicted percentages of the customer base that will order each meal.</h2>
+			<ul>
+				{% for item in predictions %}
+				<li>Meal {{loop.index}}: {{item*100}}%</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<a href="/">Make Another Prediction</a>
+
+
+	<!-- Chart script -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+
+	<div>
+
+		<!-- bar chart canvas element -->
+		<canvas id="chart" width="600" height="400"></canvas>
+
+		<script>
+			var pieData = [{% for item,label,colors in set %}
+											{
+												value: {{item}},
+												label: "{{label}}",
+												color: "{{colors}}"
+											},
+											{% endfor %}];
+
+			var ctx = document.getElementById('chart').getContext("2D");
+			var pichart = new Chart(ctx, {type:'pie',data: pieData});
+		</script>
+
+	</div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</html>
+
+

@@ -23,13 +23,14 @@
 			<h2>This Page:</h2>
 			<ul>
 				<li>Compares created meals and outputs predicted percent of customer base that will order each meal.</li>
-				<li>To compare meal successfulness upload meal csv with each column as a meal and each cell an ingredient ID.to compare meal successfulness.</li>
+				<li>To compare meal successfulness upload meal csv with each column as a meal and each cell an ingredient ID to compare meal successfulness.</li>
+				<li>Submitting the file will re-direct you the Predict page where you will be able to view your results.</li>
 			</ul>
 			<div>
 	      <form id="upload_form" action = "http://localhost:3333/uploader" method="POST" 
 	         enctype = "multipart/form-data">
 	         <input type = "file" name = "file" />
-	         <input type = "submit"/>
+	         <input type = "submit" name='Predict'/>
 	      </form>
 			</div>
 		</div>
