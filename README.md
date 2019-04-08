@@ -1,6 +1,6 @@
-## Smunch Customer Clustering and Meal Satisfaction Analysis
+# Smunch Customer Clustering and Meal Satisfaction Analysis
     
-### Background:
+## Background:
 Smunch is a rapidly growing B2B Food Delivery service based out of Germany, with their headquarters in Berlin. The general structure of Smunch consists of allowing employees of subscribing companies to choose an offered meal from local restaurants which Smuch packages and deliverers to the company. The number of options per day varies but is normally 4 or 8 depending on the subscribing company. If eight options per day they are from two restaurants with four options each. Each day the menu is changed and eight new meals are offered.
 
 ## Motivation:
@@ -45,10 +45,10 @@ Based on this plot and inspection of clusters, 3 and 5 are the most insightful n
 #### Dimensionality Reduction using PCA and tSNE (For Plotting Purposes)
 To get a sense of how these clusters are forming we can use PCA or tSNE to lower the dimensionality of the features to 2 or 3 dimensions.
  - PCA Results: The amount of variance accounted for by x number of principal components is as follows:
-![PCA Variance Explained](clusteringimages/pca_variance.png)
+![PCA Variance Explained](clustering/images/pca_variance.png)
 
 Using the first three principal compenents and plotting a subset of the user clusters, we get the below:
-![PCA 3D Cluster Plot](clusteringimages/pca_3d_3clusters.png)
+![PCA 3D Cluster Plot](clustering/images/pca_3d_3clusters.png)
 
 tSNE was performed and images are located in the images folder. Results of tSNE were not as clear as PCA however.
 
@@ -86,6 +86,13 @@ Based on these ingredients we can loosely name each cluster and the the clusteri
 #### Radar Plot Inspection of Clusters
 To get a better sense of the "profile" of each cluster, radar plots were created. It is important to note that the features are not related to one another so the "shape" of the plot should not be strongly taken into account. However I did try to group similar ingredients next to eachother on the perimeter to allow for some interpretation.
 
+
+- ![Clustering Radar Plot meat](clustering/images/radar_meat.png)
+- ![Clustering Radar Plot veg](clustering/images/radar_veg.png)
+- ![Clustering Radar Plot asian](clustering/images/radar_asian_seafood.png)
+
+- Overlap of meat and veg
+- ![Clustering Radar Plot asian](clustering/images/radar_overlap.png)
 
 
   - [cluster folder link](https://github.com/noahschumacher/smunch-user-food-analysis/tree/master/clustering "Clustering Folder")
