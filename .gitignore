@@ -2,4 +2,6 @@
 private/
 data/
 order_prediction/pickles/
+__pycache__/
+.ipynb_checkpoints/
 
