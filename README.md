@@ -157,19 +157,19 @@ Based on these ingredients we can loosely name each cluster and the the clusteri
 <a name="clust_radar"/>
 
 ### Radar Plot Inspection of Clusters
-To get a better sense of the "profile" of each cluster, radar plots were created. It is important to note that the features are not related to one another so the "shape" of the plot should not be strongly taken into account. However I did try to group similar ingredients next to eachother on the perimeter to allow for some interpretation.
+To get a better sense of the "profile" of each cluster, radar plots were created. It is important to note that the features are not related to one another so the "shape" of the plot should not be strongly taken into account. However I did try to group similar ingredients next to eachother on the perimeter to allow for some interpretation. These images are available for inspection in the ![cluster images](clustering/images/) folder.
 
 
-![Clustering Radar Plot meat](clustering/images/radar_meat.png)
-![Clustering Radar Plot veg](clustering/images/radar_veg.png)
-![Clustering Radar Plot asian](clustering/images/radar_asian_seafood.png)
+|        Meat Cluster      |      Vegan/Vegetarian Cluster     |     Asian/Seafood Cluster     | 
+|--------------------------|-----------------------------------|-------------------------------|
+|<img src="clustering/images/radar_meat.png" alt="drawing" width="350"/>|<img src="clustering/images/radar_veg.png" alt="drawing" width="350"/>|<img src="clustering/images/radar_asian_seafood.png" alt="drawing" width="350"/>|
 
-- Overlap of meat and veg
+- Below are the Meat and Vegan/Vegetarian radar plots overlayed.
+- Note: I organized the inngredient categories in order of importance for the Vegan/Vegetarian cluster. This is why the radar plot is smoothly descreasing counter clockwise.
+
 ![Clustering Radar Plot asian](clustering/images/radar_overlap.png)
 
-
-  - [cluster folder link](https://github.com/noahschumacher/smunch-user-food-analysis/tree/master/clustering "Clustering Folder")
-
+[cluster folder link](https://github.com/noahschumacher/smunch-user-food-analysis/tree/master/clustering "Clustering Folder")
 
 
 <!-- PROB OF ORDER -->
