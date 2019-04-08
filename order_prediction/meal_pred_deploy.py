@@ -97,28 +97,6 @@ def get_customer_percents(meal_ings_dict, tot_ingredient_ids, user_objs):
 
 
 
-# def run():
-# 	## Smunch Ingredient Info
-# 	ing_df = pd.read_csv('data/ingrds.csv')
-# 	ing_dict = dict(zip(ing_df.ingredient_id, ing_df.name))
-# 	ing_ids = list(ing_dict.keys())
-# 	ing_names = list(ing_dict.values())
-
-# 	## Getting the user objects
-# 	user_objs = pickle.load(open('order_prediction/user_objects_test_dict.p', 'rb'))
-
-# 	start = time.time()
-# 	## Reading in meals to compare to
-# 	meals = pd.read_csv('website/test_csvs/meal_comp1.csv')
-# 	meals.drop(['Unnamed: 0', 'Meals'], axis=1, inplace=True)
-# 	meals_d = meals.to_dict(orient='list')
-
-
-# 	print(get_customer_percents(meals_d, ing_ids, user_objs))
-# 	end = time.time()
-# 	print("Tot Time:", end-start)
-
-
 
 
 
