@@ -224,7 +224,7 @@ Our Final Prediction is:
 <a name="mealp_model"/>
 
 ### Model
-The final model used for this prediction is a Random Forest Regressor. It performance is 20% superior to the baseline guess of equal % of customer base for every offered meal. More specifically, on average the Random Forest customer % prediction is +-8%. The below chart shows a comparison of a Random Forest, Gradient Boost, and the Baseline.
+The final model used for this prediction is a Random Forest Regressor. It performance is 25% superior to the baseline guess of equal % of customer base for every offered meal. More specifically, on average the Random Forest customer % prediction is +-7.5%. The below chart shows a comparison of a Random Forest, Gradient Boost, and the Baseline.
 
 ![Model Performance](order_prediction/images/model_perform.png)
 
