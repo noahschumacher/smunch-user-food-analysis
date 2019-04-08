@@ -6,32 +6,35 @@
 3. [Goals](#goals)
 4. [Difficulties](#difficulties)
 5. [Structure](#structure)
-  1. [Clustering](#clustering)
-    1. [Data](#clust_data)
-    2. [First Run Findinngs](#clust_run1)
-    3. [Second Run Findings](#clust_run2)
-    4. [Dimensionality Reduction](#dim_reduc)
-    5. [Cluster Breakdown](#clust_break)
-    6. [Radar Plots](#clust_radar)
-  2. [Probability of Meal Prediction](#mealp)
-    1. [Background](#mealp_back)
-    2. [Model](#mealp_model)
-  3. [Meal Rating Prediction](#mealr)
-    1. [Data](#mealr_data)
-    2. [Models and Performance](#mealr_mandp)
-    3. [Issue and Solution](#mealr_iands)
-  4. [Recommender](#recommender)
+    1. [Clustering](#clustering)
+        1. [Data](#clust_data)
+        2. [First Run Findinngs](#clust_run1)
+        3. [Second Run Findings](#clust_run2)
+        4. [Dimensionality Reduction](#dim_reduc)
+        5. [Cluster Breakdown](#clust_break)
+        6. [Radar Plots](#clust_radar)
+    2. [Probability of Meal Prediction](#mealp)
+        1. [Background](#mealp_back)
+        2. [Model](#mealp_model)
+    3. [Meal Rating Prediction](#mealr)
+        1. [Data](#mealr_data)
+        2. [Models and Performance](#mealr_mandp)
+        3. [Issue and Solution](#mealr_iands)
+    4. [Recommender](#recommender)
 
 
 <a name="background"/>
+
 ## Background:
 Smunch is a rapidly growing B2B Food Delivery service based out of Germany, with their headquarters in Berlin. The general structure of Smunch consists of allowing employees of subscribing companies to choose an offered meal from local restaurants which Smuch packages and deliverers to the company. The number of options per day varies but is normally 4 or 8 depending on the subscribing company. If eight options per day they are from two restaurants with four options each. Each day the menu is changed and eight new meals are offered.
 
 <a name="motivation"/>
+
 ## Motivation:
 As Smunch continues to expand and increase volume, it is extremely important to understand the trends and habits of their growing customer base. From a basic understanding of what meals are popular to an in-depth breakdown of what the key ingredients in meals, certain customers find most important, understanding what makes Smunch customers tick will allow Smunch to continuously improve their product and customer experience. More concretely having insights into key ingredients will allow Smunch to tailor meals to appeal to a wider customer base as well as increased order numbers. Understanding the factions or clusters of their customers and what they like will allow them to make sure each customer is presented with a good meal option every day. Other insights including identifying which customers are the most loyal and which customers churn or will allow for tailored efforts to increase customer retention and frequency of use.
 
 <a name="goals"/>
+
 ## Goals :
 Bellow are the desired outcomes of the Smunch Customer and Meal Analysis:
 
@@ -50,6 +53,7 @@ Bellow are the desired outcomes of the Smunch Customer and Meal Analysis:
         2. Make sure all user groups are given a decent meal choice.
 
 <a name="difficulties"/>
+
 ## Potential Areas of Concern / Difficulty:
 #### 1. Lack of a strong signal in individual ingredient importance. Meals are complex and the interaction of ingredients is what really makes up the taste. Individual ingredients might not encompass these complex relations.
 #### 2. Comparing users who have been using Smunch for a long time vs recently started using Smunch:
@@ -62,14 +66,17 @@ Bellow are the desired outcomes of the Smunch Customer and Meal Analysis:
   - What to set the limit on the number of clusters to etc.
 
 <a name="structure"/>
+
 # Structure:
 ## Clustering:
   - This folder attempts to clusters users based on their ingredient preferences.
 
 <a name="clustering"/>
+
 ### How Clustering Was Performed:
 
 <a name="clust_data"/>
+
 1. Data:
  
 | UserID | Ingredient 1 Freq | Ingredient 2 Freq | ... | Ingredient N Freq |
@@ -85,6 +92,7 @@ Bellow are the desired outcomes of the Smunch Customer and Meal Analysis:
   - Hierarchical Cluster
   
 <a name="clust_run1"/>
+
 ### First Run Insight:
 Because there are 1400+ unique ingredients many ingredients that are very similar are counted as seperate and skew the clustering to favor various forms of spices and vegetables as the most important feature for all clusters. To fix this I manually went through the 900 top ingredients and mapped them to 89 unique ingredient categories. This helped several aspects of the clustering:
   1. Greatly lowered the dimensionality and allows for much faster computation time on generating the clusters.
@@ -93,6 +101,7 @@ Because there are 1400+ unique ingredients many ingredients that are very simila
 Ingredient frequency also was standardized so that ingredients that all ingredients have the same weighting.
   
 <a name="clust_run2"/>
+
 ### Second Run Results (With Ingredient Categories):
 With ingredient categories Kmeans clustering cann identify some clear user groups. The below silhouette score plot shows how well seperated different cluster sizes are.
 
@@ -102,6 +111,7 @@ With ingredient categories Kmeans clustering cann identify some clear user group
 Based on this plot and inspection of clusters, 3 and 5 are the most insightful numbers.
 
 <a name="dim_reduc"/>
+
 ### Dimensionality Reduction using PCA and tSNE (For Plotting Purposes)
 To get a sense of how these clusters are forming we can use PCA or tSNE to lower the dimensionality of the features to 2 or 3 dimensions.
  - PCA Results: The amount of variance accounted for by x number of principal components is as follows:
@@ -113,6 +123,7 @@ Using the first three principal compenents and plotting a subset of the user clu
 tSNE was performed and images are located in the images folder. Results of tSNE were not as clear as PCA however.
 
 <a name="clust_break"/>
+
 ### Most Important Ingredient Inspection:
 From Kmeans clustering with 3 clusters we get these distinct user groups and their 15 most important ingredients (0 is most important and so on)
 
@@ -142,7 +153,9 @@ Based on these ingredients we can loosely name each cluster and the the clusteri
 |    2    | Vegan / Vegetarian ("healthy") cluster|           39.71%         |
 |    3    | Meat Protien / Dairy ("heavy") cluster|           48.90%         |
 
+
 <a name="clust_radar"/>
+
 ### Radar Plot Inspection of Clusters
 To get a better sense of the "profile" of each cluster, radar plots were created. It is important to note that the features are not related to one another so the "shape" of the plot should not be strongly taken into account. However I did try to group similar ingredients next to eachother on the perimeter to allow for some interpretation.
 
@@ -162,10 +175,12 @@ To get a better sense of the "profile" of each cluster, radar plots were created
 <!-- PROB OF ORDER -->
 
 <a name="mealp"/>
+
 ## Probabilty of Ordering Meal Prediction:
   - Folder contains model and information for predicting the successfulness of a meal compared to other offered meals.
 
 <a name="mealp_back"/>
+
 ### Background
 This part of the project allows Smunch to predict the "successfulness" of dish. Because Smunch's meal setup is offerering either 4 or 8 meals a day to each company, it would be very hard to create a general "successfulness" metric on a standalone meal. The goal here is predict the "successfulness" of a meal compared to the other meals offered. More concretely we define our target to be:
 
@@ -207,6 +222,7 @@ Our Final Prediction is:
 - 0% of customer base will order Meal4
 
 <a name="mealp_model"/>
+
 ### Model
 The final model used for this prediction is a Random Forest Regressor. It performance is 20% superior to the baseline guess of equal % of customer base for every offered meal. More specifically, on average the Random Forest customer % prediction is +-8%. The below chart shows a comparison of a Random Forest, Gradient Boost, and the Baseline.
 
@@ -221,12 +237,14 @@ The final model used for this prediction is a Random Forest Regressor. It perfor
 
 <!-- AVG RATING SECTION -->
 <a name="mealr"/>
+
 ## Average Meal Rating Prediction:
   - Predicting the average rating of meal by users based on the ingredients in the meal.
 
 Initially the rating seemed to be the clearest indicator of how successful a meal was. However after creating several different models to predict the rating of a meal based on the ingredients it was clear there was little to no signal.
 
 <a name="mealr_data"/>
+
 ### Data:
   - Features = Ingredients
   - Target = Avg Meal Rating
@@ -240,6 +258,7 @@ Ex:
 | 3      |      1       |     1        |     |      0       |     4.2    |
 
 <a name="mealr_mandp"/>
+
 ### Models and Performance:
 - Several models attempted (listed in order of performance.)
   1. Random Forrest Regressor 1% lower MSE
@@ -248,6 +267,7 @@ Ex:
   4. Baseline (Avg of all meal ratings)
 
 <a name="mealr_iands"/>
+
 ### Issue and Solution:
   - Not much signal in ingredients alone to make model get significant results.
   - Realized ratings do not always depend on the quality or taste of the meal. In fact most bad ratings tend to come other factors besides taste. For example, delivery was late, meal was incorrect, meal was cold, etc.
@@ -259,6 +279,7 @@ Ex:
  <!-- RECOMMENDER -->
  
 <a name="recommender"/>
+
 ## Recommender (not focus of this project!!):
   - Simple recommender systems uses NMF.
   - Needs a lot of work until usable.
