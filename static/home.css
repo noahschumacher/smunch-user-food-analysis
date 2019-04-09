@@ -1,13 +1,14 @@
 #HomeHeader{
-	background-color: #dc9191;
-	border: 5px dashed white;
+	background-color: #7a4ee5;
+	border: 5px solid white;
+	border-radius: 8px;
 	margin: 25px;
 	padding: 25px;
 }
 
 #HomeHeader2{
-	background-color: #aff3a3;
-	border: 5px dashed green;
+	background-color: #D4D4FF;
+	border-radius: 8px;
 	margin: 25px;
 	padding: 25px;
 }
@@ -15,4 +16,52 @@
 img {
     height: 220px;
     width: 400px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: 200px;
+  margin-right: 200px;
+  background-color: white;
+}
+
+#submit {
+  background-color: #7a4ee5;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 12px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+#submit {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+#submit:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.5);
+}
+
+#link {
+  background-color: #7a4ee5;
+  color: black;
+  padding: 10px 21px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+#link {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+#link:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.5);
 }
