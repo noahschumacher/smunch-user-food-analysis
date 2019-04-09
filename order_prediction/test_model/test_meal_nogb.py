@@ -129,7 +129,7 @@ if __name__ == '__main__':
 	ing_df = pd.read_csv('data/ingrds.csv')
 
 	start = time.time()
-	user_objs = pickle.load(open('order_prediction/user_objects_deployable_dict.p', 'rb'))
+	user_objs = pickle.load(open('order_prediction/pickles/user_objects_deployable_dict.p', 'rb'))
 	end = time.time()
 	print("Time to read in user objs:", end-start)
 
