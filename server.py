@@ -35,14 +35,11 @@ def uploader():
 		meals = pd.read_csv(destination)
 		meals.drop(['Unnamed: 0', 'Meals'], axis=1, inplace=True)
 		meals_d = meals.to_dict(orient='list')
+
 		preds = list(get_customer_percents(meals_d, ing_ids, user_objs))
+		col_names = meals.columns
 
-
-		labels = ['Meal 1', 'Meal 2', 'Meal 3', 'Meal 4']
-		colors = [ "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA"]
-
-
-		return render_template('prediction.html', predictions=preds, set=zip(preds, labels, colors))
+		return render_template('prediction.html', info=zip(col_names, preds))
 
 
 
