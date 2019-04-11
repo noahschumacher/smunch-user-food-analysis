@@ -9,3 +9,4 @@ clustering/.ipynb_checkpoints/
 db/__pycache__/
 temp_files/
 .DS_Store
+test_csvs/*.numbers
