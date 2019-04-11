@@ -16,8 +16,8 @@
 		<div id='controls'>
 			<h2>Below are the predicted percentages of the customer base that will order each meal.</h2>
 			<ul>
-				{% for item in predictions %}
-				<li>Meal {{loop.index}}: {{item*100}}%</li>
+				{% for name, percent in info %}
+				<li>{{name}}: {{percent*100}}%</li>
 				{% endfor %}
 			</ul>
 		</div>
